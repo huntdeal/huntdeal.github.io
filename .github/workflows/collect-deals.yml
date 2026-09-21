@@ -3,8 +3,8 @@ name: HuntDeal Deal Collector
 on:
   workflow_dispatch:
   schedule:
-    # Every 6 hours (UTC)
-    - cron: "0 */6 * * *"
+    # Every 5 mint (UTC)
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
