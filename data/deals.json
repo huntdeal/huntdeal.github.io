@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21T13:32:58",
+  "updated_at": "2026-09-21T09:56:12",
   "count": 14,
   "deals": [
     {
@@ -12,10 +12,10 @@
       "discount_percent": 69,
       "rank": 7,
       "rating": 4.2,
-      "review_count": 5341,
+      "review_count": 5342,
       "image_url": "https://m.media-amazon.com/images/I/81dYMkZiFEL._SL1500_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B0GNGZ6FBB",
@@ -26,11 +26,11 @@
       "mrp": 3999,
       "discount_percent": 69,
       "rank": 8,
-      "rating": 4.2,
-      "review_count": 137,
-      "image_url": "https://m.media-amazon.com/images/I/61iSqBQYjeL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/41RHD19vRaL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B0H7S93Q4Q",
@@ -41,11 +41,11 @@
       "mrp": 999,
       "discount_percent": 50,
       "rank": 2,
-      "rating": 4.3,
-      "review_count": 419,
-      "image_url": "https://m.media-amazon.com/images/I/51UQZq+6X1L._SL1254_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31ZOeBPcM4L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B0BTD4S4XF",
@@ -56,11 +56,11 @@
       "mrp": 2500,
       "discount_percent": 48,
       "rank": 6,
-      "rating": 4.3,
-      "review_count": 12246,
-      "image_url": "https://m.media-amazon.com/images/I/51yfw2JIxwL._SL1080_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31G4L00mBjL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B089GM5Q7Z",
@@ -71,11 +71,11 @@
       "mrp": 1299,
       "discount_percent": 46,
       "rank": 1,
-      "rating": 3.8,
-      "review_count": 6418,
-      "image_url": "https://m.media-amazon.com/images/I/51L6-tjn0KL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/316Kg49Xa1L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B07D4T4YT2",
@@ -85,12 +85,12 @@
       "price": 1449,
       "mrp": 2199,
       "discount_percent": 34,
-      "rank": 13,
-      "rating": 4.2,
-      "review_count": 102747,
-      "image_url": "https://m.media-amazon.com/images/I/71RAA5qZoGL._SL1500_.jpg",
+      "rank": 12,
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/41jHiC+134L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B0CPSLYDRD",
@@ -105,7 +105,7 @@
       "review_count": 249,
       "image_url": "https://m.media-amazon.com/images/I/614UHnf26gL._SL1467_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B08Q9RDT1S",
@@ -130,12 +130,12 @@
       "price": 10399,
       "mrp": 14300,
       "discount_percent": 27,
-      "rank": 11,
-      "rating": 4.4,
-      "review_count": 12436,
-      "image_url": "https://m.media-amazon.com/images/I/6178dHjxEuL._SL1500_.jpg",
+      "rank": 10,
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31QL++pM3EL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B07S5FBY3J",
@@ -145,12 +145,12 @@
       "price": 399,
       "mrp": 499,
       "discount_percent": 20,
-      "rank": 12,
-      "rating": 3.8,
-      "review_count": 134871,
-      "image_url": "https://m.media-amazon.com/images/I/71Xe3zMVWeL._SL1500_.jpg",
+      "rank": 11,
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/51soyYwbFPL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B0G596SGTJ",
@@ -165,22 +165,22 @@
       "review_count": 311,
       "image_url": "https://m.media-amazon.com/images/I/71CgpFW7XcL._SL1500_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B00F159RIK",
       "title": "Bajaj DX-2 600W Dry Iron | Advance Soleplate And Anti-Bacterial German Coating Technology | 180 Degree Swivel Cord | Cool Touch Handle | 2-Yrs Warranty 【Black】",
       "brand": "Bajaj",
       "category": "Home",
-      "price": 576,
+      "price": 583,
       "mrp": 625,
-      "discount_percent": 8,
+      "discount_percent": 7,
       "rank": 9,
-      "rating": 4.1,
-      "review_count": 16329,
-      "image_url": "https://m.media-amazon.com/images/I/61zJmQbjS3L._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31m02KRJ2-L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B08947GQCM",
@@ -191,11 +191,11 @@
       "mrp": 0,
       "discount_percent": 0,
       "rank": 3,
-      "rating": 4.0,
-      "review_count": 9179,
-      "image_url": "https://m.media-amazon.com/images/I/41K6UvqbJZL._SL1200_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31z2QX5q8GL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-21T13:32:58"
+      "updated_at": "2026-09-21T09:56:12"
     },
     {
       "asin": "B0DYNYWGVP",
