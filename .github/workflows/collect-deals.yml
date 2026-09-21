@@ -1,0 +1,50 @@
+name: HuntDeal Deal Collector
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every 6 hours (UTC)
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  collect-deals:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Amazon CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install git+https://github.com/sunil-dhaka/amazon-cli.git
+
+      - name: Run HuntDeal collector
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          python collector/amazon_collector.py
+
+      - name: Commit updated deal data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/deals.json data/price_history.json
+
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "Update HuntDeal deal data"
+            git push
+          fi
