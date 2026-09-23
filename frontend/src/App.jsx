@@ -1325,22 +1325,26 @@
         <footer className="footer">
 
           <div className="container">
-
+        
             <strong>
               HuntDeal
             </strong>
-
+        
             <p>
               Deal discovery made simple.
             </p>
-
+        
+            <p className="amazon-disclosure">
+              As an Amazon Associate I earn from qualifying purchases.
+            </p>
+        
             <small>
               Prices and availability may change. Always verify
               details on the retailer's website.
             </small>
-
+        
           </div>
-
+        
         </footer>
 
       </div>
