@@ -15,7 +15,6 @@ PROJECT_DIR = COLLECTOR_DIR.parent
 
 DATA_DIR = PROJECT_DIR / "data"
 DEALS_FILE = DATA_DIR / "deals.json"
-HISTORY_FILE = DATA_DIR / "price_history.json"
 
 # Local SQLite is kept as a migration/source option.
 DB_PATH = PROJECT_DIR / "database" / "huntdeal.db"
@@ -69,7 +68,7 @@ def migrate_sqlite_if_json_missing():
     This preserves the existing HuntDeal data when moving to Option A.
     """
 
-    if DEALS_FILE.exists() and HISTORY_FILE.exists():
+    if DEALS_FILE.exists(): 
         return
 
     if not DB_PATH.exists():
@@ -109,28 +108,7 @@ def migrate_sqlite_if_json_missing():
         for row in product_rows:
             deals.append(dict(row))
 
-        cursor.execute("""
-            SELECT
-                asin,
-                price,
-                mrp,
-                recorded_at
-            FROM price_history
-            ORDER BY recorded_at ASC
-        """)
 
-        history_rows = cursor.fetchall()
-
-        history = {}
-
-        for row in history_rows:
-            asin = row["asin"]
-
-            history.setdefault(asin, []).append({
-                "price": row["price"],
-                "mrp": row["mrp"],
-                "recorded_at": row["recorded_at"]
-            })
 
         conn.close()
 
@@ -146,19 +124,9 @@ def migrate_sqlite_if_json_missing():
                 }
             )
 
-        if not HISTORY_FILE.exists():
-            save_json(
-                HISTORY_FILE,
-                {
-                    "updated_at": timestamp,
-                    "history": history
-                }
-            )
 
         print(
             f"Migrated {len(deals)} products "
-            f"and {sum(len(v) for v in history.values())} "
-            f"price records."
         )
 
     except sqlite3.Error as error:
@@ -467,26 +435,12 @@ def save_deals_to_json(deals):
         }
     )
 
-    history_data = load_json(
-        HISTORY_FILE,
-        {
-            "updated_at": None,
-            "history": {}
-        }
-    )
-
     existing_deals = {
-        item.get("asin"): item
-        for item in deals_data.get("deals", [])
-        if item.get("asin")
     }
-
-    history_map = history_data.get("history", {})
 
     now = now_iso()
 
     saved = 0
-    history_updates = 0
 
     for deal in deals:
         asin = deal.get("asin")
@@ -514,16 +468,6 @@ def save_deals_to_json(deals):
 
             category = detect_category(product)
 
-            rating = product.get(
-                "rating",
-                deal.get("rating")
-            )
-
-            review_count = product.get(
-                "review_count",
-                deal.get("review_count")
-            )
-
             image_url = product.get(
                 "image_url",
                 deal.get("image_url")
@@ -539,14 +483,7 @@ def save_deals_to_json(deals):
                 "specs": {}
             })
 
-            rating = deal.get("rating")
-            review_count = deal.get("review_count")
             image_url = deal.get("image_url")
-
-        price = deal.get("price")
-        mrp = deal.get("mrp")
-        discount_percent = deal.get("discount_percent")
-        rank = deal.get("rank")
 
         old = existing_deals.get(asin, {})
 
@@ -555,73 +492,28 @@ def save_deals_to_json(deals):
             "title": title,
             "brand": brand,
             "category": category,
-            "price": price,
-            "mrp": mrp,
-            "discount_percent": discount_percent,
-            "rank": rank,
-            "rating": rating,
-            "review_count": review_count,
+
+            # Kept temporarily so the current frontend
+            # does not break. We will handle image sourcing
+            # separately.
             "image_url": image_url,
+
             "created_at": old.get("created_at") or now,
             "updated_at": now
         }
 
         existing_deals[asin] = product_record
 
-        # --------------------------------------------
-        # Price history
-        # --------------------------------------------
-
-        product_history = history_map.setdefault(
-            asin,
-            []
-        )
-
-        current_price = float(price or 0)
-
-        last_price = None
-
-        if product_history:
-            try:
-                last_price = float(
-                    product_history[-1].get("price", 0)
-                )
-            except (TypeError, ValueError):
-                last_price = None
-
-        if (
-            current_price > 0
-            and (
-                last_price is None
-                or current_price != last_price
-            )
-        ):
-            product_history.append({
-                "price": current_price,
-                "mrp": mrp,
-                "recorded_at": now
-            })
-
-            history_updates += 1
-
-            print(
-                f"   Price history updated: ₹{current_price}"
-            )
-
-        else:
-            print(
-                f"   Price unchanged: ₹{price}"
-            )
-
         saved += 1
 
     final_deals = list(existing_deals.values())
 
+    # Keep a stable order.
     final_deals.sort(
-        key=lambda item: float(
-            item.get("discount_percent") or 0
-        ),
-        reverse=True
+        key=lambda item: (
+            item.get("category") or "Other",
+            item.get("title") or ""
+        )
     )
 
     save_json(
@@ -633,16 +525,7 @@ def save_deals_to_json(deals):
         }
     )
 
-    save_json(
-        HISTORY_FILE,
-        {
-            "updated_at": now,
-            "history": history_map
-        }
-    )
-
-    return saved, history_updates
-
+    return saved
 
 # ============================================================
 # DISPLAY
@@ -664,15 +547,6 @@ def display_deals(deals):
 
         print(
             f"   ASIN: {deal.get('asin')}"
-        )
-
-        print(
-            f"   Price: ₹{deal.get('price')}"
-        )
-
-        print(
-            f"   Discount: "
-            f"{deal.get('discount_percent')}%"
         )
 
         print()
@@ -711,17 +585,12 @@ def main():
         f"\nFound {len(deals)} deals."
     )
 
-    saved, history_updates = save_deals_to_json(
+    saved = save_deals_to_json(
         deals
     )
 
     print(
         f"\nSaved/updated {saved} products."
-    )
-
-    print(
-        f"Price history updates: "
-        f"{history_updates}"
     )
 
     display_deals(deals)
@@ -735,35 +604,13 @@ def main():
         {"deals": []}
     )
 
-    history_data = load_json(
-        HISTORY_FILE,
-        {"history": {}}
-    )
-
-    total_history = sum(
-        len(items)
-        for items in history_data.get(
-            "history",
-            {}
-        ).values()
-        if isinstance(items, list)
-    )
-
     print(
         f"Products: "
         f"{len(deals_data.get('deals', []))}"
     )
 
     print(
-        f"Price records: {total_history}"
-    )
-
-    print(
         f"\nDeals file: {DEALS_FILE}"
-    )
-
-    print(
-        f"History file: {HISTORY_FILE}"
     )
 
     print("\n===================================")
