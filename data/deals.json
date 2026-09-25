@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-25T01:30:06",
+  "updated_at": "2026-09-25T06:32:46",
   "count": 15,
   "deals": [
     {
@@ -11,11 +11,11 @@
       "mrp": 1999,
       "discount_percent": 84,
       "rank": 7,
-      "rating": 4.2,
-      "review_count": 5345,
-      "image_url": "https://m.media-amazon.com/images/I/81dYMkZiFEL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/51W39AanGfL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B0GNGZ6FBB",
@@ -26,11 +26,11 @@
       "mrp": 3999,
       "discount_percent": 69,
       "rank": 8,
-      "rating": 4.2,
-      "review_count": 139,
-      "image_url": "https://m.media-amazon.com/images/I/61iSqBQYjeL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/41RHD19vRaL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B0BTD4S4XF",
@@ -45,7 +45,7 @@
       "review_count": 12217,
       "image_url": "https://m.media-amazon.com/images/I/51yfw2JIxwL._SL1080_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B0H7S93Q4Q",
@@ -56,11 +56,11 @@
       "mrp": 999,
       "discount_percent": 50,
       "rank": 2,
-      "rating": 4.3,
-      "review_count": 450,
-      "image_url": "https://m.media-amazon.com/images/I/51UQZq+6X1L._SL1254_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31ZOeBPcM4L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B089GM5Q7Z",
@@ -71,11 +71,11 @@
       "mrp": 1299,
       "discount_percent": 46,
       "rank": 1,
-      "rating": 3.8,
-      "review_count": 6415,
-      "image_url": "https://m.media-amazon.com/images/I/51L6-tjn0KL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/316Kg49Xa1L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B0H4DBCKWB",
@@ -101,11 +101,11 @@
       "mrp": 5995,
       "discount_percent": 40,
       "rank": 5,
-      "rating": 3.9,
-      "review_count": 308,
-      "image_url": "https://m.media-amazon.com/images/I/71CgpFW7XcL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31sxEruQVZL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B07D4T4YT2",
@@ -116,11 +116,11 @@
       "mrp": 2199,
       "discount_percent": 34,
       "rank": 12,
-      "rating": 4.2,
-      "review_count": 102788,
-      "image_url": "https://m.media-amazon.com/images/I/71RAA5qZoGL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/41jHiC+134L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B0CPSLYDRD",
@@ -131,11 +131,11 @@
       "mrp": 1499,
       "discount_percent": 33,
       "rank": 4,
-      "rating": 4.3,
-      "review_count": 246,
-      "image_url": "https://m.media-amazon.com/images/I/614UHnf26gL._SL1467_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31rZhAzxjOL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B08Q9RDT1S",
@@ -161,11 +161,11 @@
       "mrp": 14300,
       "discount_percent": 26,
       "rank": 10,
-      "rating": 4.4,
-      "review_count": 12437,
-      "image_url": "https://m.media-amazon.com/images/I/6178dHjxEuL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31QL++pM3EL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B07S5FBY3J",
@@ -176,11 +176,11 @@
       "mrp": 499,
       "discount_percent": 20,
       "rank": 11,
-      "rating": 3.8,
-      "review_count": 134797,
-      "image_url": "https://m.media-amazon.com/images/I/71Xe3zMVWeL._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/51soyYwbFPL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B00F159RIK",
@@ -191,11 +191,11 @@
       "mrp": 625,
       "discount_percent": 7,
       "rank": 9,
-      "rating": 4.1,
-      "review_count": 16336,
-      "image_url": "https://m.media-amazon.com/images/I/61zJmQbjS3L._SL1500_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31m02KRJ2-L._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B08947GQCM",
@@ -206,11 +206,11 @@
       "mrp": 0,
       "discount_percent": 0,
       "rank": 3,
-      "rating": 4.0,
-      "review_count": 9185,
-      "image_url": "https://m.media-amazon.com/images/I/41K6UvqbJZL._SL1200_.jpg",
+      "rating": 0.0,
+      "review_count": 0,
+      "image_url": "https://m.media-amazon.com/images/I/31z2QX5q8GL._AC_SR240,220_.jpg",
       "created_at": "2026-09-16T15:06:10",
-      "updated_at": "2026-09-25T01:30:06"
+      "updated_at": "2026-09-25T06:32:46"
     },
     {
       "asin": "B0DYNYWGVP",
