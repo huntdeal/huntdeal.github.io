@@ -205,7 +205,6 @@ function HomePage() {
                     <img
                       src={deal.image_url}
                       alt={deal.title}
-                      loading="lazy"
                     />
                   </div>
 
