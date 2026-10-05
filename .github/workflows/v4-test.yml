@@ -1,0 +1,45 @@
+name: Amazon Deals V4 Cloud Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  amazon-deals-test:
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 15
+
+    env:
+      AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r v3/requirements.txt
+
+      - name: Install Playwright Chromium
+        run: |
+          python -m playwright install --with-deps chromium
+
+      - name: Run Amazon Deals Collector
+        run: |
+          python v3/collector.py
+
+      - name: Upload Excel result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: amazon-deals-v4-test
+          path: v3/output/amazon_deals_v3.xlsx
+          if-no-files-found: warn
