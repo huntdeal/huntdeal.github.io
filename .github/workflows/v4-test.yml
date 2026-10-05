@@ -1,6 +1,10 @@
 name: Amazon Deals V4 Cloud Test
 
 on:
+  push:
+    branches:
+      - backend-development
+
   workflow_dispatch:
 
 jobs:
