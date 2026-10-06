@@ -4,3 +4,4 @@ __pycache__/
 v1/output/
 v2/output/
 v3/output/
+node_modules/

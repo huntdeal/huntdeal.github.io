@@ -6,6 +6,7 @@ from datetime import datetime
 from playwright.async_api import async_playwright
 from dotenv import load_dotenv
 from pathlib import Path
+from supabase import create_client
 from urllib.parse import (
     parse_qsl,
     urlencode,
@@ -17,9 +18,19 @@ from urllib.parse import (
 
 load_dotenv()
 
-AMAZON_ASSOCIATE_TAG = os.getenv(
-    "AMAZON_ASSOCIATE_TAG",
-    ""
+AMAZON_ASSOCIATE_TAG = os.getenv("AMAZON_ASSOCIATE_TAG")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+if not SUPABASE_URL:
+    raise RuntimeError("SUPABASE_URL is missing from .env")
+
+if not SUPABASE_KEY:
+    raise RuntimeError("SUPABASE_KEY is missing from .env")
+
+supabase = create_client(
+    SUPABASE_URL,
+    SUPABASE_KEY
 )
 
 # ============================================================
@@ -639,6 +650,161 @@ def clean_product(product):
 
 
 # ============================================================
+# SAVE CLEANED PRODUCT TO SUPABASE
+# ============================================================
+
+def save_product_to_supabase(product):
+    """
+    Save one cleaned V3 product to:
+
+    1. products
+    2. product_deals
+    3. price_history
+    """
+
+    asin = product.get("ASIN")
+
+    if not asin:
+        print("⚠ Skipping product: ASIN missing")
+        return False
+
+    # ========================================================
+    # 1. PRODUCTS
+    # ========================================================
+
+    product_data = {
+        "asin": asin,
+        "title": product.get("Product Name"),
+        "product_url": product.get("Product URL"),
+        "affiliate_url": product.get("Affiliate URL"),
+        "image_url": product.get("Image URL"),
+        "product_type": None,
+        "is_active": True,
+    }
+
+    product_response = (
+        supabase
+        .table("products")
+        .upsert(
+            product_data,
+            on_conflict="asin"
+        )
+        .select("id, asin")
+        .execute()
+    )
+
+    if not product_response.data:
+        raise RuntimeError(
+            f"Failed to save product: {asin}"
+        )
+
+    product_id = product_response.data[0]["id"]
+
+    # ========================================================
+    # 2. PRODUCT DEAL
+    # ========================================================
+
+    deal_data = {
+        "product_id": product_id,
+        "source": "amazon",
+
+        "deal_price": product.get("Deal Price"),
+        "mrp": product.get("MRP"),
+        "discount_percent": product.get("Discount %"),
+
+        "discount_text": None,
+
+        "coupon_price": product.get("Coupon"),
+        "coupon_message": product.get("Coupon Message"),
+
+        "deal_status": product.get("Deal Status"),
+        "deal_type": product.get("Deal Type"),
+        "deal_id": None,
+
+        "affiliate_url": product.get("Affiliate URL"),
+
+        "is_active": True,
+
+        "starts_at": None,
+        "ends_at": None,
+
+        "raw_data": None,
+    }
+
+    deal_response = (
+        supabase
+        .table("product_deals")
+        .upsert(
+            deal_data,
+            on_conflict="product_id,source"
+        )
+        .select("id")
+        .execute()
+    )
+
+    if not deal_response.data:
+        raise RuntimeError(
+            f"Failed to save deal: {asin}"
+        )
+
+    # ========================================================
+    # 3. PRICE HISTORY
+    # ========================================================
+
+    current_price = product.get("Deal Price")
+    current_mrp = product.get("MRP")
+    current_discount = product.get("Discount %")
+
+    history_response = (
+        supabase
+        .table("price_history")
+        .select(
+            "id, price, mrp, discount_percent"
+        )
+        .eq(
+            "product_id",
+            product_id
+        )
+        .order(
+            "recorded_at",
+            desc=True
+        )
+        .limit(1)
+        .execute()
+    )
+
+    last_history = (
+        history_response.data[0]
+        if history_response.data
+        else None
+    )
+
+    price_changed = True
+
+    if last_history:
+
+        if (
+            last_history.get("price") == current_price
+            and last_history.get("mrp") == current_mrp
+            and last_history.get("discount_percent") == current_discount
+        ):
+            price_changed = False
+
+    if price_changed:
+
+        supabase.table("price_history").insert({
+            "product_id": product_id,
+            "price": current_price,
+            "mrp": current_mrp,
+            "discount_percent": current_discount,
+            "source": "amazon",
+        }).execute()
+
+    return True
+
+
+
+# ============================================================
 # PROCESS AMAZON API RESPONSE
 # ============================================================
 
@@ -1066,6 +1232,32 @@ def save_excel():
             rows.append(
                 cleaned
             )
+
+            # ----------------------------------------------------
+            # Save to Supabase
+            # ----------------------------------------------------
+
+            try:
+
+                save_product_to_supabase(
+                    cleaned
+                )
+
+                print(
+                    f"✓ Supabase saved: "
+                    f"{cleaned.get('ASIN')}"
+                )
+
+            except Exception as e:
+
+                print(
+                    f"✗ Supabase save failed: "
+                    f"{cleaned.get('ASIN')}"
+                )
+
+                print(
+                    f"  Error: {e}"
+                )
 
     if not rows:
 
