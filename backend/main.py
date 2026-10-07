@@ -204,3 +204,104 @@ def get_deals():
             status_code=500,
             detail=f"Failed to fetch deals: {str(e)}"
         )
+
+
+# ============================================================
+# GET SINGLE DEAL
+# ============================================================
+
+@app.get(
+    "/api/deals/{deal_id}",
+    response_model=Deal
+)
+def get_deal(deal_id: int):
+
+    try:
+
+        response = (
+            supabase
+            .table("product_deals")
+            .select("""
+                id,
+                product_id,
+                source,
+                deal_price,
+                mrp,
+                discount_percent,
+                coupon_price,
+                coupon_message,
+                deal_status,
+                deal_type,
+                affiliate_url,
+                products (
+                    id,
+                    asin,
+                    title,
+                    product_url,
+                    affiliate_url,
+                    image_url
+                )
+            """)
+            .eq("id", deal_id)
+            .eq("source", "amazon")
+            .eq("is_active", True)
+            .limit(1)
+            .execute()
+        )
+
+        if not response.data:
+
+            raise HTTPException(
+                status_code=404,
+                detail="Deal not found"
+            )
+
+        row = response.data[0]
+        product = row.get("products") or {}
+
+        return {
+            "id": row["id"],
+            "asin": product.get("asin"),
+            "title": product.get("title"),
+            "image_url": product.get("image_url"),
+            "product_url": product.get("product_url"),
+
+            "affiliate_url": (
+                row.get("affiliate_url")
+                or product.get("affiliate_url")
+            ),
+
+            "price": row.get("deal_price"),
+            "mrp": row.get("mrp"),
+            "discount_percent": row.get(
+                "discount_percent"
+            ),
+
+            "coupon_price": row.get(
+                "coupon_price"
+            ),
+
+            "coupon_message": row.get(
+                "coupon_message"
+            ),
+
+            "deal_status": row.get(
+                "deal_status"
+            ),
+
+            "deal_type": row.get(
+                "deal_type"
+            ),
+
+            "source": row.get("source")
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch deal: {str(e)}"
+        )
