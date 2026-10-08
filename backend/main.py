@@ -85,6 +85,8 @@ class Deal(BaseModel):
     deal_status: Optional[str] = None
     deal_type: Optional[str] = None
     source: str
+    amazon_category: Optional[str] = None
+    huntdeal_category: Optional[str] = None
 
 
 class DealsResponse(BaseModel):
@@ -161,7 +163,9 @@ def get_deals():
                     title,
                     product_url,
                     affiliate_url,
-                    image_url
+                    image_url,
+                    amazon_category,
+                    huntdeal_category
                 )
             """)
             .eq("source", "amazon")
@@ -213,6 +217,9 @@ def get_deals():
                 "deal_type": row.get(
                     "deal_type"
                 ),
+
+                "amazon_category": product.get("amazon_category"),
+                "huntdeal_category": product.get("huntdeal_category"),
 
                 "source": row.get("source")
             })
