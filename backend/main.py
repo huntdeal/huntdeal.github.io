@@ -91,6 +91,30 @@ class DealsResponse(BaseModel):
     data: list[Deal]
     count: int
 
+class ProductDeal(BaseModel):
+    id: int
+    price: Optional[float] = None
+    mrp: Optional[float] = None
+    discount_percent: Optional[float] = None
+    coupon_price: Optional[float] = None
+    coupon_message: Optional[str] = None
+    deal_status: Optional[str] = None
+    deal_type: Optional[str] = None
+    source: str
+
+
+class ProductDetail(BaseModel):
+    id: int
+    asin: str
+    title: Optional[str] = None
+    image_url: Optional[str] = None
+    product_url: Optional[str] = None
+    affiliate_url: Optional[str] = None
+    product_type: Optional[str] = None
+    amazon_category: Optional[str] = None
+    huntdeal_category: Optional[str] = None
+    deal: Optional[ProductDeal] = None
+
 
 # ============================================================
 # ROOT
@@ -305,3 +329,125 @@ def get_deal(deal_id: int):
             status_code=500,
             detail=f"Failed to fetch deal: {str(e)}"
         )
+
+
+# ============================================================
+# GET PRODUCT DETAIL
+# ============================================================
+
+@app.get(
+    "/api/products/{product_id}",
+    response_model=ProductDetail
+)
+def get_product(product_id: int):
+
+    try:
+
+        response = (
+            supabase
+            .table("products")
+            .select("""
+                id,
+                asin,
+                title,
+                product_url,
+                affiliate_url,
+                image_url,
+                product_type,
+                amazon_category,
+                huntdeal_category,
+                product_deals (
+                    id,
+                    source,
+                    deal_price,
+                    mrp,
+                    discount_percent,
+                    coupon_price,
+                    coupon_message,
+                    deal_status,
+                    deal_type,
+                    affiliate_url,
+                    is_active
+                )
+            """)
+            .eq("id", product_id)
+            .limit(1)
+            .execute()
+        )
+
+        if not response.data:
+            raise HTTPException(
+                status_code=404,
+                detail="Product not found"
+            )
+
+        row = response.data[0]
+
+        deals = [
+            deal
+            for deal in (row.get("product_deals") or [])
+            if deal.get("source") == "amazon"
+            and deal.get("is_active") is True
+        ]
+
+        deal_data = None
+
+        if deals:
+            deal = deals[0]
+
+            deal_data = {
+                "id": deal["id"],
+                "price": deal.get("deal_price"),
+                "mrp": deal.get("mrp"),
+                "discount_percent": deal.get(
+                    "discount_percent"
+                ),
+                "coupon_price": deal.get(
+                    "coupon_price"
+                ),
+                "coupon_message": deal.get(
+                    "coupon_message"
+                ),
+                "deal_status": deal.get(
+                    "deal_status"
+                ),
+                "deal_type": deal.get(
+                    "deal_type"
+                ),
+                "source": deal.get("source")
+            }
+
+        return {
+            "id": row["id"],
+            "asin": row["asin"],
+            "title": row.get("title"),
+            "image_url": row.get("image_url"),
+            "product_url": row.get("product_url"),
+            "affiliate_url": (
+                row.get("affiliate_url")
+                or (
+                    deals[0].get("affiliate_url")
+                    if deals
+                    else None
+                )
+            ),
+            "product_type": row.get("product_type"),
+            "amazon_category": row.get(
+                "amazon_category"
+            ),
+            "huntdeal_category": row.get(
+                "huntdeal_category"
+            ),
+            "deal": deal_data
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch product: {str(e)}"
+        )
+    

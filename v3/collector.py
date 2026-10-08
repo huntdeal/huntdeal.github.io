@@ -42,6 +42,26 @@ AMAZON_DEALS_URL = "https://www.amazon.in/deals"
 # V3 testing target
 MAX_PRODUCTS = 10
 
+# ============================================================
+# AMAZON → HUNTDEAL CATEGORY MAP
+# ============================================================
+
+CATEGORY_MAP = {
+    "gl_wireless_accessory": "Electronics",
+    "gl_beauty": "Beauty",
+    "gl_personal_care_appliances": "Beauty",
+    "gl_kitchen": "Home & Kitchen",
+    "gl_home": "Home & Kitchen",
+}
+
+def map_huntdeal_category(amazon_category):
+    if not amazon_category:
+        return None
+
+    return CATEGORY_MAP.get(amazon_category)
+
+
+
 # Maximum times we continue when nothing new appears
 IDLE_LIMIT = 5
 
@@ -599,6 +619,8 @@ def clean_product(product):
         "symbol"
     )
 
+    huntdeal_category = map_huntdeal_category(category)
+
     # --------------------------------------------------------
     # Product
     # --------------------------------------------------------
@@ -612,6 +634,7 @@ def clean_product(product):
         ),
 
         "Category": category,
+        
 
         "Deal Price": deal_price,
 
@@ -679,6 +702,10 @@ def save_product_to_supabase(product):
         "affiliate_url": product.get("Affiliate URL"),
         "image_url": product.get("Image URL"),
         "product_type": None,
+        "amazon_category": product.get("Category"),
+        "huntdeal_category": map_huntdeal_category(
+            product.get("Category")
+        ),
         "is_active": True,
     }
 
