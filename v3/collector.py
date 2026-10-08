@@ -52,6 +52,8 @@ CATEGORY_MAP = {
     "gl_personal_care_appliances": "Beauty",
     "gl_kitchen": "Home & Kitchen",
     "gl_home": "Home & Kitchen",
+    "gl_electronics": "Electronics",
+    "gl_musical_instruments": "Electronics",
 }
 
 def map_huntdeal_category(amazon_category):
@@ -1638,3 +1640,4 @@ if __name__ == "__main__":
     asyncio.run(
         main()
     )
+
