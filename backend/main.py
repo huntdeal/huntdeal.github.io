@@ -270,7 +270,9 @@ def get_deal(deal_id: int):
                     title,
                     product_url,
                     affiliate_url,
-                    image_url
+                    image_url,
+                    amazon_category,
+                    huntdeal_category
                 )
             """)
             .eq("id", deal_id)
@@ -324,7 +326,9 @@ def get_deal(deal_id: int):
                 "deal_type"
             ),
 
-            "source": row.get("source")
+            "source": row.get("source"),
+            "amazon_category": product.get("amazon_category"),
+            "huntdeal_category": product.get("huntdeal_category")
         }
 
     except HTTPException:
