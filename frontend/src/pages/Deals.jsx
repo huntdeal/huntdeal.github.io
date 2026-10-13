@@ -4,10 +4,9 @@ import {
   SlidersHorizontal,
   ChevronDown,
   ChevronRight,
-  Heart,
-  ExternalLink,
 } from "lucide-react";
 
+import DealCard from "../components/DealCard";
 const deals = [
   {
     id: 1,
@@ -183,68 +182,41 @@ function Deals() {
 
         {/* PRODUCTS */}
 
-        <section className="deals-product-grid">
+        
+{/* PRODUCTS */}
 
-          {deals.map((deal) => (
-            <article
-              className="deals-product-card"
-              key={deal.id}
-            >
+<section className="deals-product-grid">
+  {deals.map((deal) => {
+    const productImages = {
+      1: "/assets/product-placeholders/headphones.png",
+      2: "/assets/product-placeholders/speaker.png",
+      3: "/assets/product-placeholders/smartwatch.png",
+      4: "/assets/product-placeholders/keyboard.png",
+      5: "/assets/product-placeholders/camera.png",
+      6: "/assets/product-placeholders/airfryer.png",
+      7: "/assets/product-placeholders/monitor.png",
+      8: "/assets/product-placeholders/headphones.png",
+    };
 
-              <div className="deals-product-image">
+    return (
+      <DealCard
+        key={deal.id}
+        product={{
+          id: deal.id,
+          title: deal.title,
+          category: deal.category,
+          price: deal.price,
+          originalPrice: deal.oldPrice,
+          discount: deal.discount,
+          rating: deal.rating,
+          image: productImages[deal.id],
+          amazonLink: "#",
+        }}
+      />
+    );
+  })}
+</section>
 
-                <span className="deals-discount">
-                  {deal.discount}
-                </span>
-
-                <button
-                  className="deals-heart"
-                  aria-label="Add to wishlist"
-                >
-                  <Heart size={17} />
-                </button>
-
-                <div className="deals-product-emoji">
-                  {deal.emoji}
-                </div>
-
-              </div>
-
-              <div className="deals-product-content">
-
-                <span className="deals-product-category">
-                  {deal.category}
-                </span>
-
-                <h2>{deal.title}</h2>
-
-                <div className="deals-rating">
-                  <span>★</span>
-                  {deal.rating}
-                </div>
-
-                <div className="deals-price">
-
-                  <strong>{deal.price}</strong>
-
-                  <del>{deal.oldPrice}</del>
-
-                </div>
-
-                <Link
-                  to={`/product/${deal.id}`}
-                  className="deals-view-button"
-                >
-                  View Deal
-                  <ExternalLink size={15} />
-                </Link>
-
-              </div>
-
-            </article>
-          ))}
-
-        </section>
 
         {/* PAGINATION */}
 

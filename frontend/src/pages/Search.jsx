@@ -4,9 +4,8 @@ import {
   SlidersHorizontal,
   ChevronDown,
   ChevronRight,
-  Heart,
-  ExternalLink,
 } from "lucide-react";
+import DealCard from "../components/DealCard";
 
 const products = [
   {
@@ -229,68 +228,39 @@ function SearchPage() {
 
         {filteredProducts.length > 0 ? (
 
-          <section className="search-products-grid">
+          
+<section className="search-products-grid">
+  {filteredProducts.map((product) => {
+    const productImages = {
+      1: "/assets/product-placeholders/headphones.png",
+      2: "/assets/product-placeholders/speaker.png",
+      3: "/assets/product-placeholders/smartwatch.png",
+      4: "/assets/product-placeholders/keyboard.png",
+      5: "/assets/product-placeholders/camera.png",
+      6: "/assets/product-placeholders/airfryer.png",
+      7: "/assets/product-placeholders/monitor.png",
+      8: "/assets/product-placeholders/headphones.png",
+    };
 
-            {filteredProducts.map((product) => (
-              <article
-                className="search-product-card"
-                key={product.id}
-              >
+    return (
+      <DealCard
+        key={product.id}
+        product={{
+          id: product.id,
+          title: product.title,
+          category: product.category,
+          price: product.price,
+          originalPrice: product.oldPrice,
+          discount: product.discount,
+          rating: product.rating,
+          image: productImages[product.id],
+          amazonLink: "#",
+        }}
+      />
+    );
+  })}
+</section>
 
-                <div className="search-product-image">
-
-                  <span className="search-discount">
-                    {product.discount}
-                  </span>
-
-                  <button
-                    className="search-heart"
-                    aria-label="Add to wishlist"
-                  >
-                    <Heart size={17} />
-                  </button>
-
-                  <div className="search-product-emoji">
-                    {product.emoji}
-                  </div>
-
-                </div>
-
-                <div className="search-product-content">
-
-                  <span className="search-product-category">
-                    {product.category}
-                  </span>
-
-                  <h2>{product.title}</h2>
-
-                  <div className="search-product-rating">
-                    <span>★</span>
-                    {product.rating}
-                  </div>
-
-                  <div className="search-product-price">
-
-                    <strong>{product.price}</strong>
-
-                    <del>{product.oldPrice}</del>
-
-                  </div>
-
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="search-view-button"
-                  >
-                    View Deal
-                    <ExternalLink size={15} />
-                  </Link>
-
-                </div>
-
-              </article>
-            ))}
-
-          </section>
 
         ) : (
 

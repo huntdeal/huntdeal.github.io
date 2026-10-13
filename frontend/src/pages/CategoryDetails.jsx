@@ -5,9 +5,8 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowLeft,
-  Heart,
-  ExternalLink,
 } from "lucide-react";
+import DealCard from "../components/DealCard";
 
 const categoryData = {
   electronics: {
@@ -59,6 +58,7 @@ const categoryData = {
   },
 };
 
+
 const products = [
   {
     id: 1,
@@ -103,7 +103,7 @@ const products = [
   {
     id: 5,
     title: "Wireless Gaming Headset",
-    category: "Electronics",
+    category: "Gaming",
     price: "₹2,799",
     oldPrice: "₹4,499",
     discount: "38% OFF",
@@ -112,20 +112,105 @@ const products = [
   },
   {
     id: 6,
+    title: "Digital Air Fryer",
+    category: "Home & Kitchen",
+    price: "₹3,499",
+    oldPrice: "₹5,999",
+    discount: "42% OFF",
+    rating: "4.2",
+    emoji: "🍳",
+  },
+  {
+    id: 7,
+    title: "Android Smartphone",
+    category: "Mobiles",
+    price: "₹12,999",
+    oldPrice: "₹17,999",
+    discount: "28% OFF",
+    rating: "4.3",
+    emoji: "📱",
+  },
+  {
+    id: 8,
+    title: "Fast Charging Adapter",
+    category: "Mobiles",
+    price: "₹799",
+    oldPrice: "₹1,299",
+    discount: "38% OFF",
+    rating: "4.2",
+    emoji: "🔌",
+  },
+  {
+    id: 9,
+    title: "Everyday Laptop",
+    category: "Laptops",
+    price: "₹39,999",
+    oldPrice: "₹49,999",
+    discount: "20% OFF",
+    rating: "4.4",
+    emoji: "💻",
+  },
+  {
+    id: 10,
+    title: "Wireless Gaming Mouse",
+    category: "Gaming",
+    price: "₹1,499",
+    oldPrice: "₹2,499",
+    discount: "40% OFF",
+    rating: "4.3",
+    emoji: "🖱️",
+  },
+  {
+    id: 11,
+    title: "Casual Sneakers",
+    category: "Fashion",
+    price: "₹1,499",
+    oldPrice: "₹2,999",
+    discount: "50% OFF",
+    rating: "4.1",
+    emoji: "👟",
+  },
+  {
+    id: 12,
     title: "Smart LED Desk Lamp",
-    category: "Electronics",
+    category: "Home & Kitchen",
     price: "₹999",
     oldPrice: "₹1,799",
     discount: "44% OFF",
     rating: "4.1",
     emoji: "💡",
   },
+  {
+    id: 13,
+    title: "Face Care Essentials",
+    category: "Beauty",
+    price: "₹599",
+    oldPrice: "₹999",
+    discount: "40% OFF",
+    rating: "4.2",
+    emoji: "✨",
+  },
+  {
+    id: 14,
+    title: "Wireless Earbuds",
+    category: "Accessories",
+    price: "₹1,199",
+    oldPrice: "₹2,499",
+    discount: "52% OFF",
+    rating: "4.3",
+    emoji: "🎧",
+  },
 ];
+
 
 function CategoryDetails() {
   const { categorySlug } = useParams();
 
   const category = categoryData[categorySlug];
+  const categoryProducts = products.filter(
+  (product) =>
+    product.category.toLowerCase() === category.name.toLowerCase()
+);
 
   if (!category) {
     return (
@@ -220,72 +305,48 @@ function CategoryDetails() {
 
         {/* PRODUCTS */}
 
-        <section className="category-product-grid">
+        
+<section className="category-product-grid">
+  {products
+  .filter((product) => product.category === category.name)
+  .map((product) => {
+    
+const productImages = {
+  1: "/assets/product-placeholders/headphones.png",
+  2: "/assets/product-placeholders/speaker.png",
+  3: "/assets/product-placeholders/camera.png",
+  4: "/assets/product-placeholders/monitor.png",
+  5: "/assets/product-placeholders/headphones.png",
+  6: "/assets/product-placeholders/airfryer.png",
+  7: "/assets/product-placeholders/phone.png",
+  8: "/assets/product-placeholders/earbuds.png",
+  9: "/assets/product-placeholders/laptop.png",
+  10: "/assets/product-placeholders/keyboard.png",
+  11: "/assets/product-placeholders/shoes.png",
+  12: "/assets/product-placeholders/smartwatch.png",
+  13: "/assets/product-placeholders/earbuds.png",
+  14: "/assets/product-placeholders/earbuds.png",
+};
 
-          {products.map((product) => (
-            <article
-              className="category-product-card"
-              key={product.id}
-            >
+    return (
+      <DealCard
+        key={product.id}
+        product={{
+          id: product.id,
+          title: product.title,
+          category: product.category,
+          price: product.price,
+          originalPrice: product.oldPrice,
+          discount: product.discount,
+          rating: product.rating,
+          image: productImages[product.id],
+          amazonLink: "#",
+        }}
+      />
+    );
+  })}
+</section>
 
-              {/* IMAGE */}
-
-              <div className="category-product-image">
-
-                <span className="product-discount">
-                  {product.discount}
-                </span>
-
-                <button
-                  className="product-heart"
-                  aria-label="Add to wishlist"
-                >
-                  <Heart size={17} />
-                </button>
-
-                <div className="category-product-emoji">
-                  {product.emoji}
-                </div>
-
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="category-product-content">
-
-                <span className="category-product-category">
-                  {product.category}
-                </span>
-
-                <h2>{product.title}</h2>
-
-                <div className="category-product-rating">
-                  <span>★</span>
-                  {product.rating}
-                </div>
-
-                <div className="category-product-price">
-
-                  <strong>{product.price}</strong>
-
-                  <del>{product.oldPrice}</del>
-
-                </div>
-
-                <Link
-                  to={`/product/${product.id}`}
-                  className="category-view-button"
-                >
-                  View Deal
-                  <ExternalLink size={15} />
-                </Link>
-
-              </div>
-
-            </article>
-          ))}
-
-        </section>
 
         {/* PAGINATION */}
 

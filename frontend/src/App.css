@@ -2925,7 +2925,7 @@ button {
 
   z-index: 5;
 
-  top: 12px;
+  top: 40px;
   left: 12px;
 
   padding: 6px 8px;
@@ -3084,16 +3084,14 @@ button {
 
 .trending-clicks {
   display: flex;
-
   align-items: center;
-
   gap: 5px;
-
-  margin-bottom: 13px;
-
+  margin-top: 8px;
+  margin-bottom: 20px;
   color: var(--muted);
-
   font-size: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .trending-clicks svg {
@@ -6655,3 +6653,235 @@ button {
   }
 
 }
+
+
+/* ==============================
+   DEAL CARD COMPONENT
+============================== */
+
+.deal-card {
+  min-width: 0;
+  overflow: hidden;
+  background: #111827;
+  border: 1px solid #263244;
+  border-radius: 16px;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.deal-card:hover {
+  transform: translateY(-5px);
+  border-color: #ff5a1f;
+  box-shadow: 0 12px 30px rgba(255, 90, 31, 0.12);
+}
+
+.deal-card-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  padding: 18px;
+  background: #182131;
+}
+
+.deal-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.deal-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 10px;
+  color: #ffffff;
+  background: #ff5a1f;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.deal-wishlist {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  color: #ffffff;
+  background: #263244;
+  border: 1px solid #3b4759;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.deal-wishlist:hover {
+  color: #ff5a1f;
+}
+
+.deal-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px;
+}
+
+.deal-category {
+  color: #ff8a5b;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.deal-title {
+  display: -webkit-box;
+  overflow: hidden;
+  min-height: 44px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.deal-price-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.deal-price {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.deal-original-price {
+  color: #8b95a5;
+  font-size: 14px;
+  text-decoration: line-through;
+}
+
+.deal-rating {
+  color: #fbbf24;
+  font-size: 13px;
+}
+
+.deal-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.deal-details-btn,
+.deal-amazon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.deal-details-btn {
+  color: #ffffff;
+  background: #263244;
+  border: 1px solid #3b4759;
+}
+
+.deal-details-btn:hover {
+  background: #344155;
+}
+
+.deal-amazon-btn {
+  color: #ffffff;
+  background: #ff5a1f;
+  border: 1px solid #ff5a1f;
+}
+
+.deal-amazon-btn:hover {
+  background: #e84910;
+}
+
+@media (max-width: 480px) {
+  .deal-card-image {
+    height: 170px;
+    padding: 12px;
+  }
+
+  .deal-card-content {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .deal-price {
+    font-size: 19px;
+  }
+
+  .deal-card-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trending-card-wrapper {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+}
+
+
+.trending-card-wrapper .trending-rank {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 10px;
+  padding: 6px 10px;
+  color: #ffffff;
+  background: #263244;
+  border: 1px solid #3b4759;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.trending-card-wrapper .trending-clicks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  color: #8b95a5;
+  font-size: 12px;
+}
+
+.trending-card-wrapper .trending-rank {
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+
+.trending-card-wrapper .deal-badge {
+  top: 12px;
+  left: 62px;
+}
+

@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import {
   TrendingUp,
   ChevronRight,
-  Heart,
-  ExternalLink,
   Flame,
 } from "lucide-react";
+import DealCard from "../components/DealCard";
 
 const trendingProducts = [
   {
@@ -169,83 +168,49 @@ function Trending() {
 
         {/* PRODUCTS */}
 
-        <section className="trending-grid">
+        
+{/* PRODUCTS */}
 
-          {trendingProducts.map((product) => (
-            <article
-              className="trending-card"
-              key={product.id}
-            >
+<section className="trending-grid">
+  {trendingProducts.map((product) => {
+    const productImages = {
+      1: "/assets/product-placeholders/headphones.png",
+      2: "/assets/product-placeholders/speaker.png",
+      3: "/assets/product-placeholders/smartwatch.png",
+      4: "/assets/product-placeholders/keyboard.png",
+      5: "/assets/product-placeholders/camera.png",
+      6: "/assets/product-placeholders/airfryer.png",
+      7: "/assets/product-placeholders/monitor.png",
+      8: "/assets/product-placeholders/headphones.png",
+    };
 
-              {/* RANK */}
+    return (
+      <div className="trending-card-wrapper" key={product.id}>
 
-              <div className="trending-rank">
-                #{product.rank}
-              </div>
+        <DealCard
+          product={{
+            id: product.id,
+            rank: product.rank,
+            title: product.title,
+            category: product.category,
+            price: product.price,
+            originalPrice: product.oldPrice,
+            discount: product.discount,
+            rating: product.rating,
+            image: productImages[product.id],
+            amazonLink: "#",
+          }}
+        />
 
-              {/* IMAGE */}
+        <div className="trending-clicks">
+          <TrendingUp size={13} />
+          {product.clicks}
+        </div>
+      </div>
+    );
+  })}
+</section>
 
-              <div className="trending-image">
-
-                <span className="trending-discount">
-                  {product.discount}
-                </span>
-
-                <button
-                  className="trending-heart"
-                  aria-label="Add to wishlist"
-                >
-                  <Heart size={16} />
-                </button>
-
-                <div className="trending-emoji">
-                  {product.emoji}
-                </div>
-
-              </div>
-
-              {/* CONTENT */}
-
-              <div className="trending-content">
-
-                <span className="trending-category">
-                  {product.category}
-                </span>
-
-                <h2>{product.title}</h2>
-
-                <div className="trending-rating">
-                  <span>★</span>
-                  {product.rating}
-                </div>
-
-                <div className="trending-price">
-
-                  <strong>{product.price}</strong>
-
-                  <del>{product.oldPrice}</del>
-
-                </div>
-
-                <div className="trending-clicks">
-                  <TrendingUp size={13} />
-                  {product.clicks}
-                </div>
-
-                <Link
-                  to={`/product/${product.id}`}
-                  className="trending-view-button"
-                >
-                  View Deal
-                  <ExternalLink size={15} />
-                </Link>
-
-              </div>
-
-            </article>
-          ))}
-
-        </section>
 
         {/* VIEW ALL */}
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -11,8 +10,8 @@ import {
   Zap,
   TrendingUp,
   ShieldCheck,
-  ExternalLink,
 } from "lucide-react";
+import DealCard from "../components/DealCard";
 import "../App.css";
 
 const categories = [
@@ -98,49 +97,9 @@ const deals = [
 ];
 
 function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="app">
-      {/* NAVBAR */}
-      <header className="navbar">
-        <div className="container nav-inner">
-          <a href="#" className="logo">
-            <span className="logo-mark">H</span>
-            <span>Hunt<span>Deal</span></span>
-          </a>
-
-          <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-            <Link to="/deals">Today's Deals</Link>
-            <Link to="/categories">Categories</Link>
-            <Link to="/trending">Trending</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-          </nav>
-
-          <div className="nav-actions">
-            <button className="icon-btn" aria-label="Search">
-              <Search size={19} />
-            </button>
-
-            <button className="icon-btn desktop-only" aria-label="Account">
-              <User size={19} />
-            </button>
-
-            <button className="icon-btn desktop-only" aria-label="Wishlist">
-              <Heart size={19} />
-            </button>
-
-            <button
-              className="menu-btn"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Menu"
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
-        </div>
-      </header>
 
       {/* HERO */}
       <main>
@@ -300,44 +259,33 @@ function Home() {
             </div>
 
             <div className="deal-grid">
-              {deals.map((deal) => (
-                <article className="product-card" key={deal.title}>
-                  <div className="product-image">
-                    <span className="discount-badge">
-                      {deal.discount}
-                    </span>
+              
+            {deals.map((deal, index) => {
+              const productImages = [
+                "/assets/product-placeholders/headphones.png",
+                "/assets/product-placeholders/smartwatch.png",
+                "/assets/product-placeholders/keyboard.png",
+                "/assets/product-placeholders/airfryer.png",
+              ];
 
-                    <button className="wishlist-btn">
-                      <Heart size={17} />
-                    </button>
+              return (
+                <DealCard
+                  key={deal.title}
+                  product={{
+                    id: index + 1,
+                    title: deal.title,
+                    category: deal.category,
+                    price: deal.price,
+                    originalPrice: deal.oldPrice,
+                    discount: deal.discount,
+                    rating: deal.rating,
+                    image: productImages[index],
+                    amazonLink: "#",
+                  }}
+                />
+              );
+            })}
 
-                    <div className="product-emoji">{deal.emoji}</div>
-                  </div>
-
-                  <div className="product-content">
-                    <span className="product-category">
-                      {deal.category}
-                    </span>
-
-                    <h3>{deal.title}</h3>
-
-                    <div className="rating">
-                      <span>★</span>
-                      {deal.rating}
-                    </div>
-
-                    <div className="price-row">
-                      <strong>{deal.price}</strong>
-                      <del>{deal.oldPrice}</del>
-                    </div>
-
-                    <a href="#" className="deal-button">
-                      View Deal
-                      <ExternalLink size={15} />
-                    </a>
-                  </div>
-                </article>
-              ))}
             </div>
           </div>
         </section>
@@ -363,48 +311,6 @@ function Home() {
           </div>
         </section>
       </main>
-
-      {/* FOOTER */}
-      <footer className="footer" id="contact">
-        <div className="container footer-grid">
-          <div>
-            <a href="#" className="logo footer-logo">
-              <span className="logo-mark">H</span>
-              <span>Hunt<span>Deal</span></span>
-            </a>
-
-            <p>
-              Your place to discover hand-picked deals and smarter savings.
-            </p>
-          </div>
-
-          <div>
-            <h4>Explore</h4>
-            <a href="#deals">Today's Deals</a>
-            <a href="#categories">Categories</a>
-            <a href="#trending">Trending</a>
-          </div>
-
-          <div id="about">
-            <h4>Company</h4>
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact</a>
-            <a href="#">FAQ</a>
-          </div>
-
-          <div>
-            <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms</a>
-            <a href="#">Affiliate Disclosure</a>
-          </div>
-        </div>
-
-        <div className="container footer-bottom">
-          <span>© 2026 HuntDeal. All rights reserved.</span>
-          <span>As an Amazon Associate I earn from qualifying purchases.</span>
-        </div>
-      </footer>
     </div>
   );
 }
