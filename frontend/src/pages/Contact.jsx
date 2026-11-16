@@ -1,312 +1,281 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import {
+  CheckCircle2,
+  Clock3,
   Mail,
-  MessageCircle,
-  ArrowRight,
-  Send,
+  MapPin,
+  MessageSquare,
+  Phone,
 } from "lucide-react";
 
-function Contact() {
-  return (
-    <main className="contact-page">
-      <div className="container">
-
-        {/* BREADCRUMB */}
-
-        <div className="breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <span>Contact</span>
-        </div>
-
-        {/* HERO */}
-
-        <section className="contact-hero">
-
-          <div>
-            <span className="section-label">
-              CONTACT US
-            </span>
-
-            <h1>
-              Have a question?
-              <br />
-              <span>Let's talk.</span>
-            </h1>
-
-            <p>
-              Have a question about a deal, product or HuntDeal?
-              Send us a message and we'll get back to you.
-            </p>
-          </div>
-
-          <div className="contact-hero-badge">
-            <div className="contact-badge-icon">
-              <MessageCircle size={25} />
-            </div>
-
-            <strong>
-              We're here to help
-            </strong>
-
-            <span>
-              Questions, feedback or suggestions are welcome.
-            </span>
-          </div>
-
-        </section>
-
-        {/* CONTACT CONTENT */}
-
-        <section className="contact-content">
-
-          {/* FORM */}
-
-          <div className="contact-form-card">
-
-            <div className="contact-card-heading">
-              <span className="section-label">
-                SEND A MESSAGE
-              </span>
-
-              <h2>
-                Tell us what you need.
-              </h2>
-
-              <p>
-                Fill in the form below and we'll review your
-                message.
-              </p>
-            </div>
-
-            <form
-              className="contact-form"
-              onSubmit={(e) => e.preventDefault()}
-            >
-
-              <div className="contact-form-row">
-
-                <div className="contact-field">
-                  <label htmlFor="name">
-                    Name
-                  </label>
-
-                  <input
-                    id="name"
-                    type="text"
-                    placeholder="Your name"
-                  />
-                </div>
-
-                <div className="contact-field">
-                  <label htmlFor="email">
-                    Email
-                  </label>
-
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                  />
-                </div>
-
-              </div>
-
-              <div className="contact-field">
-
-                <label htmlFor="subject">
-                  Subject
-                </label>
-
-                <input
-                  id="subject"
-                  type="text"
-                  placeholder="What is your message about?"
-                />
-
-              </div>
-
-              <div className="contact-field">
-
-                <label htmlFor="message">
-                  Message
-                </label>
-
-                <textarea
-                  id="message"
-                  rows="6"
-                  placeholder="Write your message here..."
-                ></textarea>
-
-              </div>
-
-              <button
-                type="submit"
-                className="contact-submit-button"
-              >
-                Send Message
-                <Send size={16} />
-              </button>
-
-            </form>
-
-          </div>
-
-          {/* CONTACT INFO */}
-
-          <aside className="contact-info">
-
-            <div className="contact-info-card">
-
-              <div className="contact-info-icon">
-                <Mail size={21} />
-              </div>
-
-              <div>
-                <span>
-                  Email
-                </span>
-
-                <h3>
-                  support@huntdeal.in
-                </h3>
-
-                <p>
-                  For general questions and support.
-                </p>
-              </div>
-
-            </div>
-
-            <div className="contact-info-card">
-
-              <div className="contact-info-icon">
-                <MessageCircle size={21} />
-              </div>
-
-              <div>
-                <span>
-                  Feedback
-                </span>
-
-                <h3>
-                  Tell us what you think
-                </h3>
-
-                <p>
-                  Suggestions help us improve HuntDeal.
-                </p>
-              </div>
-
-            </div>
-
-            <div className="contact-info-card">
-
-              <div className="contact-info-icon">
-                <ArrowRight size={21} />
-              </div>
-
-              <div>
-                <span>
-                  Looking for deals?
-                </span>
-
-                <h3>
-                  Explore today's deals
-                </h3>
-
-                <p>
-                  Discover products and offers on HuntDeal.
-                </p>
-
-                <Link
-                  to="/deals"
-                  className="contact-deals-link"
-                >
-                  Explore Deals
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-
-            </div>
-
-            {/* SOCIAL */}
-
-            <div className="contact-social-card">
-
-              <span className="section-label">
-                FOLLOW HUNTDEAL
-              </span>
-
-              <h3>
-                Stay connected.
-              </h3>
-
-              <div className="contact-socials">
-
-                <a href="#" aria-label="Instagram">
-                  <img
-                    src="/assets/social-icons/instagram.png"
-                    alt="Instagram"
-                  />
-                </a>
-
-                <a href="#" aria-label="Facebook">
-                  <img
-                    src="/assets/social-icons/facebook.png"
-                    alt="Facebook"
-                  />
-                </a>
-
-                <a href="#" aria-label="YouTube">
-                  <img
-                    src="/assets/social-icons/youtube.png"
-                    alt="YouTube"
-                  />
-                </a>
-
-              </div>
-
-            </div>
-
-          </aside>
-
-        </section>
-
-        {/* FAQ CTA */}
-
-        <section className="contact-faq-cta">
-
-          <div>
-
-            <span className="section-label">
-              NEED QUICK HELP?
-            </span>
-
-            <h2>
-              Check our <span>FAQ.</span>
-            </h2>
-
-            <p>
-              Find answers to common questions about HuntDeal,
-              products and affiliate links.
-            </p>
-
-          </div>
-
-          <Link
-            to="/faq"
-            className="contact-faq-button"
-          >
-            Visit FAQ
-            <ArrowRight size={16} />
-          </Link>
-
-        </section>
-
-      </div>
-    </main>
-  );
+import PageHeader from "../components/PageHeader.jsx";
+import Button from "../components/ui/Button.jsx";
+import Field from "../components/ui/Field.jsx";
+import { useToast } from "../context/ToastContext.jsx";
+import { submitContactMessage } from "../services/siteService.js";
+import { SITE, SOCIAL_LINKS } from "../utils/constants.js";
+
+const SUBJECTS = [
+  "General question",
+  "Report a wrong price",
+  "Suggest a product",
+  "Partnership",
+  "Something is broken",
+];
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Client-side validation. The backend must validate again when wired up. */
+function validate(values) {
+  const errors = {};
+  if (!values.name.trim()) errors.name = "Tell us what to call you.";
+  else if (values.name.trim().length < 2) errors.name = "That looks too short.";
+
+  if (!values.email.trim()) errors.email = "An email address is required.";
+  else if (!EMAIL_RE.test(values.email.trim()))
+    errors.email = "Enter a valid email address.";
+
+  if (!values.subject) errors.subject = "Pick a subject.";
+
+  if (!values.message.trim()) errors.message = "Please write a message.";
+  else if (values.message.trim().length < 20)
+    errors.message = "A little more detail helps — at least 20 characters.";
+
+  return errors;
 }
 
-export default Contact;
+const EMPTY = { name: "", email: "", subject: "", message: "" };
+
+export default function Contact() {
+  const toast = useToast();
+  const [values, setValues] = useState(EMPTY);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [status, setStatus] = useState("idle");
+  const [reference, setReference] = useState(null);
+
+  function setField(field, value) {
+    const next = { ...values, [field]: value };
+    setValues(next);
+    if (touched[field]) setErrors(validate(next));
+  }
+
+  function onBlur(field) {
+    setTouched((current) => ({ ...current, [field]: true }));
+    setErrors(validate(values));
+  }
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    const found = validate(values);
+    setErrors(found);
+    setTouched({ name: true, email: true, subject: true, message: true });
+    if (Object.keys(found).length) return;
+
+    setStatus("loading");
+    try {
+      const result = await submitContactMessage(values);
+      setReference(result.reference);
+      setStatus("done");
+      setValues(EMPTY);
+      setTouched({});
+      toast.success("Message validated — demo build, nothing was sent.");
+    } catch (error) {
+      setStatus("error");
+      toast.error(error.message);
+    }
+  }
+
+  return (
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Home", to: "/" }, { label: "Contact" }]}
+        eyebrow={
+          <>
+            <MessageSquare size={14} aria-hidden="true" />
+            Contact
+          </>
+        }
+        title="Tell us what we got wrong"
+        description="Pricing corrections, product suggestions, partnership enquiries or a broken page — all of it is useful."
+      />
+
+      <section className="section">
+        <div className="shell contact-layout">
+          {/* Form -------------------------------------------------------- */}
+          <div className="card card--pad">
+            {status === "done" ? (
+              <div className="stack stack-4">
+                <span className="state__icon" aria-hidden="true">
+                  <CheckCircle2 size={26} />
+                </span>
+                <h2>Message received</h2>
+                <p className="text-sm text-muted">
+                  Your reference is <strong>{reference}</strong>. This is a demo
+                  build, so the message was validated but not actually
+                  delivered — email delivery is connected with the backend.
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setStatus("idle");
+                    setReference(null);
+                  }}
+                  style={{ alignSelf: "flex-start" }}
+                >
+                  Send another message
+                </Button>
+              </div>
+            ) : (
+              <form className="stack stack-6" onSubmit={onSubmit} noValidate>
+                <div className="stack stack-2">
+                  <h2 className="panel-title">Send a message</h2>
+                  <p className="text-sm text-muted">
+                    Fields marked with an asterisk are required.
+                  </p>
+                </div>
+
+                <div className="form-grid">
+                  <Field
+                    label="Your name"
+                    required
+                    value={values.name}
+                    error={touched.name ? errors.name : undefined}
+                    onChange={(event) => setField("name", event.target.value)}
+                    onBlur={() => onBlur("name")}
+                    placeholder="Divya Chouhan"
+                    autoComplete="name"
+                  />
+
+                  <Field
+                    label="Email address"
+                    type="email"
+                    required
+                    value={values.email}
+                    error={touched.email ? errors.email : undefined}
+                    onChange={(event) => setField("email", event.target.value)}
+                    onBlur={() => onBlur("email")}
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                  />
+
+                  <Field
+                    as="select"
+                    label="Subject"
+                    required
+                    className="form-grid__span"
+                    value={values.subject}
+                    error={touched.subject ? errors.subject : undefined}
+                    onChange={(event) => setField("subject", event.target.value)}
+                    onBlur={() => onBlur("subject")}
+                  >
+                    <option value="">Choose a subject…</option>
+                    {SUBJECTS.map((subject) => (
+                      <option key={subject} value={subject}>
+                        {subject}
+                      </option>
+                    ))}
+                  </Field>
+
+                  <Field
+                    as="textarea"
+                    label="Message"
+                    required
+                    className="form-grid__span"
+                    value={values.message}
+                    error={touched.message ? errors.message : undefined}
+                    hint="Include a product link if you are reporting a price."
+                    onChange={(event) => setField("message", event.target.value)}
+                    onBlur={() => onBlur("message")}
+                    placeholder="What would you like to tell us?"
+                  />
+                </div>
+
+                <div className="row row--between row--wrap">
+                  <p className="text-xs text-muted" style={{ maxWidth: "38ch" }}>
+                    Demo build: messages are validated here but not delivered
+                    anywhere yet.
+                  </p>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    loading={status === "loading"}
+                  >
+                    Send message
+                  </Button>
+                </div>
+              </form>
+            )}
+          </div>
+
+          {/* Details ----------------------------------------------------- */}
+          <div className="stack stack-4">
+            <div className="contact-card">
+              <span className="contact-card__icon" aria-hidden="true">
+                <Mail size={19} />
+              </span>
+              <div>
+                <div className="contact-card__label">Email</div>
+                <div className="contact-card__value">{SITE.email}</div>
+                <div className="contact-card__value">{SITE.supportEmail}</div>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <span className="contact-card__icon" aria-hidden="true">
+                <Phone size={19} />
+              </span>
+              <div>
+                <div className="contact-card__label">Phone</div>
+                <div className="contact-card__value">{SITE.phone}</div>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <span className="contact-card__icon" aria-hidden="true">
+                <MapPin size={19} />
+              </span>
+              <div>
+                <div className="contact-card__label">Office</div>
+                <div className="contact-card__value">{SITE.address}</div>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <span className="contact-card__icon" aria-hidden="true">
+                <Clock3 size={19} />
+              </span>
+              <div>
+                <div className="contact-card__label">Response time</div>
+                <div className="contact-card__value">
+                  Most messages are answered within two working days.
+                </div>
+              </div>
+            </div>
+
+            <div className="card card--pad stack stack-3">
+              <h3 className="panel-title">Find us elsewhere</h3>
+              <div className="chip-row">
+                {SOCIAL_LINKS.map((social) => (
+                  <a
+                    key={social.id}
+                    href={social.href}
+                    className="chip"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.label}
+                  </a>
+                ))}
+              </div>
+              <p className="text-xs text-muted">
+                Order problems are handled by Amazon customer service — we
+                cannot see or change an order placed there.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

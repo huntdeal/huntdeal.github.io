@@ -1,327 +1,181 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  Clock,
-  Calendar,
-  Search,
-} from "lucide-react";
+import { ArrowRight, BookOpen, CalendarDays, Clock3, User } from "lucide-react";
 
-function Blog() {
-  const posts = [
-    {
-      category: "DEAL HUNTING",
-      title: "How to Find Better Deals Online",
-      description:
-        "Simple ways to compare products, spot discounts and make smarter buying decisions.",
-      date: "Sep 24, 2026",
-      readTime: "5 min read",
-      image: "/assets/banners/banner-main.png",
-    },
-    {
-      category: "BUYING GUIDE",
-      title: "What to Check Before Buying Electronics",
-      description:
-        "Important things to consider before choosing headphones, laptops, monitors and other electronics.",
-      date: "Sep 20, 2026",
-      readTime: "6 min read",
-      image: "/assets/categories/electronics.png",
-    },
-    {
-      category: "SMART SHOPPING",
-      title: "How to Compare Products Before Buying",
-      description:
-        "A practical checklist for comparing features, prices and product information.",
-      date: "Sep 17, 2026",
-      readTime: "4 min read",
-      image: "/assets/categories/laptops.png",
-    },
-    {
-      category: "DEALS",
-      title: "Understanding Discounts and Sale Prices",
-      description:
-        "Learn how to look beyond the discount percentage and evaluate the actual deal.",
-      date: "Sep 13, 2026",
-      readTime: "5 min read",
-      image: "/assets/badges/discount-50.png",
-    },
-    {
-      category: "TECH",
-      title: "Best Things to Look for in Wireless Headphones",
-      description:
-        "Noise cancellation, battery life, comfort and connectivity — what actually matters?",
-      date: "Sep 09, 2026",
-      readTime: "7 min read",
-      image: "/assets/product-placeholders/headphones.png",
-    },
-    {
-      category: "HOME & KITCHEN",
-      title: "Things to Consider Before Buying an Air Fryer",
-      description:
-        "Capacity, features and everyday usability to consider when choosing an air fryer.",
-      date: "Sep 05, 2026",
-      readTime: "5 min read",
-      image: "/assets/product-placeholders/airfryer.png",
-    },
-  ];
+import NewsletterSection from "../components/NewsletterSection.jsx";
+import PageHeader from "../components/PageHeader.jsx";
+import SearchBar from "../components/SearchBar.jsx";
+import Badge from "../components/ui/Badge.jsx";
+import EmptyState from "../components/states/EmptyState.jsx";
+import ErrorState from "../components/states/ErrorState.jsx";
+import { ProductGridSkeleton } from "../components/states/LoadingState.jsx";
+import { useAsync } from "../hooks/useAsync.js";
+import { useDebouncedValue } from "../hooks/useDebouncedValue.js";
+import { listPosts } from "../services/blogService.js";
+import { formatDate } from "../utils/format.js";
 
+function PostCard({ post }) {
   return (
-    <main className="blog-page">
-      <div className="container">
-
-        {/* BREADCRUMB */}
-
-        <div className="breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <span>Blog</span>
+    <article className="post-card">
+      <Link to={`/blog/${post.id}`} className="post-card__media" tabIndex={-1} aria-hidden="true">
+        <img src={post.image} alt="" loading="lazy" />
+      </Link>
+      <div className="post-card__body">
+        <Badge tone="brand" uppercase>
+          {post.category}
+        </Badge>
+        <h3 className="post-card__title">
+          <Link to={`/blog/${post.id}`}>{post.title}</Link>
+        </h3>
+        <p className="post-card__excerpt">{post.excerpt}</p>
+        <div className="post-card__foot">
+          <span>{formatDate(post.publishedAt)}</span>
+          <span>{post.readingMinutes} min read</span>
         </div>
-
-        {/* HERO */}
-
-        <section className="blog-hero">
-
-          <div>
-            <span className="section-label">
-              HUNT SMARTER
-            </span>
-
-            <h1>
-              Deal tips.
-              <br />
-              <span>Shopping smarter.</span>
-            </h1>
-
-            <p>
-              Helpful guides, buying tips and insights to help
-              you discover better products and make informed
-              shopping decisions.
-            </p>
-          </div>
-
-          <div className="blog-hero-card">
-
-            <div className="blog-hero-icon">
-              <Search size={25} />
-            </div>
-
-            <strong>
-              Hunt before you buy.
-            </strong>
-
-            <span>
-              Discover useful shopping tips and deal insights.
-            </span>
-
-          </div>
-
-        </section>
-
-        {/* SEARCH */}
-
-        <div className="blog-search">
-
-          <Search size={18} />
-
-          <input
-            type="text"
-            placeholder="Search articles..."
-          />
-
-        </div>
-
-        {/* FEATURED */}
-
-        <section className="blog-featured">
-
-          <div className="blog-section-heading">
-
-            <div>
-              <span className="section-label">
-                FEATURED
-              </span>
-
-              <h2>
-                Latest from HuntDeal
-              </h2>
-            </div>
-
-            <Link to="/deals">
-              Explore Deals
-              <ArrowRight size={15} />
-            </Link>
-
-          </div>
-
-          <article className="blog-featured-card">
-
-            <div className="blog-featured-image">
-
-              <img
-                src={posts[0].image}
-                alt={posts[0].title}
-              />
-
-            </div>
-
-            <div className="blog-featured-content">
-
-              <span className="blog-category">
-                {posts[0].category}
-              </span>
-
-              <h2>
-                {posts[0].title}
-              </h2>
-
-              <p>
-                {posts[0].description}
-              </p>
-
-              <div className="blog-meta">
-
-                <span>
-                  <Calendar size={13} />
-                  {posts[0].date}
-                </span>
-
-                <span>
-                  <Clock size={13} />
-                  {posts[0].readTime}
-                </span>
-
-              </div>
-
-              <Link
-                to="#"
-                className="blog-read-button"
-              >
-                Read Article
-                <ArrowRight size={15} />
-              </Link>
-
-            </div>
-
-          </article>
-
-        </section>
-
-        {/* ARTICLES */}
-
-        <section className="blog-articles">
-
-          <div className="blog-section-heading">
-
-            <div>
-              <span className="section-label">
-                FROM THE BLOG
-              </span>
-
-              <h2>
-                Latest Articles
-              </h2>
-            </div>
-
-          </div>
-
-          <div className="blog-grid">
-
-            {posts.slice(1).map((post, index) => (
-
-              <article
-                className="blog-card"
-                key={index}
-              >
-
-                <div className="blog-card-image">
-
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                  />
-
-                </div>
-
-                <div className="blog-card-content">
-
-                  <span className="blog-category">
-                    {post.category}
-                  </span>
-
-                  <h3>
-                    {post.title}
-                  </h3>
-
-                  <p>
-                    {post.description}
-                  </p>
-
-                  <div className="blog-meta">
-
-                    <span>
-                      <Calendar size={12} />
-                      {post.date}
-                    </span>
-
-                    <span>
-                      <Clock size={12} />
-                      {post.readTime}
-                    </span>
-
-                  </div>
-
-                  <Link
-                    to="#"
-                    className="blog-read-link"
-                  >
-                    Read Article
-                    <ArrowRight size={14} />
-                  </Link>
-
-                </div>
-
-              </article>
-
-            ))}
-
-          </div>
-
-        </section>
-
-        {/* CTA */}
-
-        <section className="blog-cta">
-
-          <div>
-
-            <span className="section-label">
-              START HUNTING
-            </span>
-
-            <h2>
-              Your next great deal{" "}
-              <span>might be here.</span>
-            </h2>
-
-            <p>
-              Explore the latest deals and discover products
-              worth checking out.
-            </p>
-
-          </div>
-
-          <Link
-            to="/deals"
-            className="blog-cta-button"
-          >
-            Explore All Deals
-            <ArrowRight size={16} />
-          </Link>
-
-        </section>
-
       </div>
-    </main>
+    </article>
   );
 }
 
-export default Blog;
+export default function Blog() {
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const debounced = useDebouncedValue(search, 250);
+
+  const { data, loading, error, reload } = useAsync(
+    () => listPosts({ search: debounced, category }),
+    [debounced, category],
+  );
+
+  const posts = data?.items ?? [];
+  const isFiltered = Boolean(debounced || category);
+  const featured = !isFiltered ? posts.find((post) => post.featured) : null;
+  const rest = featured ? posts.filter((post) => post.id !== featured.id) : posts;
+
+  return (
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Home", to: "/" }, { label: "Blog" }]}
+        eyebrow={
+          <>
+            <BookOpen size={14} aria-hidden="true" />
+            Shopping guides
+          </>
+        }
+        title="Guides for buying well, not just cheaply"
+        description="Buying guides, deal strategy and category picks — written to help you tell a real discount from a convincing badge."
+        meta={<span>{data?.total ?? 0} articles</span>}
+      />
+
+      <section className="section">
+        <div className="shell stack stack-8">
+          <div className="toolbar">
+            <div className="toolbar__search">
+              <SearchBar
+                value={search}
+                onChange={setSearch}
+                onSubmit={setSearch}
+                placeholder="Search articles"
+              />
+            </div>
+            <div className="chip-row">
+              <button
+                type="button"
+                className="chip"
+                data-active={category === ""}
+                onClick={() => setCategory("")}
+              >
+                All topics
+              </button>
+              {(data?.categories ?? []).map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className="chip"
+                  data-active={category === item}
+                  onClick={() => setCategory(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {loading && <ProductGridSkeleton count={6} />}
+          {error && <ErrorState error={error} onRetry={reload} />}
+
+          {!loading && !error && posts.length === 0 && (
+            <EmptyState
+              icon={BookOpen}
+              title="No articles match that search"
+              message="Try a different term, or clear the topic filter to see everything."
+              action={{
+                label: "Clear filters",
+                onClick: () => {
+                  setSearch("");
+                  setCategory("");
+                },
+              }}
+            />
+          )}
+
+          {featured && (
+            <article className="blog-feature">
+              <Link
+                to={`/blog/${featured.id}`}
+                className="blog-feature__media"
+                tabIndex={-1}
+                aria-hidden="true"
+              >
+                <img src={featured.image} alt="" />
+              </Link>
+              <div className="blog-feature__body">
+                <Badge tone="amber" uppercase>
+                  Featured
+                </Badge>
+                <h2>
+                  <Link to={`/blog/${featured.id}`} style={{ color: "inherit" }}>
+                    {featured.title}
+                  </Link>
+                </h2>
+                <p className="lede">{featured.excerpt}</p>
+                <div className="post-meta">
+                  <span className="post-meta__item">
+                    <User size={14} aria-hidden="true" />
+                    {featured.author}
+                  </span>
+                  <span className="post-meta__item">
+                    <CalendarDays size={14} aria-hidden="true" />
+                    {formatDate(featured.publishedAt)}
+                  </span>
+                  <span className="post-meta__item">
+                    <Clock3 size={14} aria-hidden="true" />
+                    {featured.readingMinutes} min read
+                  </span>
+                </div>
+                <Link
+                  to={`/blog/${featured.id}`}
+                  className="btn btn--primary"
+                  style={{ alignSelf: "flex-start" }}
+                >
+                  Read article
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </div>
+            </article>
+          )}
+
+          {rest.length > 0 && (
+            <div className="product-grid product-grid--3">
+              {rest.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <NewsletterSection />
+    </>
+  );
+}

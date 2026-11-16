@@ -1,289 +1,130 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, Search, ArrowRight, MessageCircle } from "lucide-react";
+import { HelpCircle, MessageSquare } from "lucide-react";
 
-function FAQ() {
-  const [openIndex, setOpenIndex] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+import Accordion from "../components/ui/Accordion.jsx";
+import PageHeader from "../components/PageHeader.jsx";
+import SearchBar from "../components/SearchBar.jsx";
+import EmptyState from "../components/states/EmptyState.jsx";
+import { faqGroups } from "../data/faqs.js";
 
-  const faqs = [
-    {
-      category: "General",
-      question: "What is HuntDeal?",
-      answer:
-        "HuntDeal is a deal discovery platform that helps shoppers discover products, discounts and interesting offers in one place.",
-    },
-    {
-      category: "General",
-      question: "How does HuntDeal work?",
-      answer:
-        "You can browse deals by category, search for products or explore trending offers. When you choose a deal, you can continue to the retailer's website to complete your purchase.",
-    },
-    {
-      category: "Deals",
-      question: "Are the prices shown on HuntDeal always accurate?",
-      answer:
-        "Product prices, availability and discounts can change on the retailer's website. Always verify the current price and availability before making a purchase.",
-    },
-    {
-      category: "Deals",
-      question: "How often are deals updated?",
-      answer:
-        "Deals are reviewed and updated regularly. Availability and pricing may change at any time depending on the retailer.",
-    },
-    {
-      category: "Amazon",
-      question: "Does HuntDeal sell the products directly?",
-      answer:
-        "No. HuntDeal is a deal discovery platform. Purchases are completed on the retailer's website.",
-    },
-    {
-      category: "Amazon",
-      question: "Why am I redirected to Amazon?",
-      answer:
-        "When a product is available on Amazon, the View Deal button can take you to Amazon so you can review the current product information and complete your purchase there.",
-    },
-    {
-      category: "Affiliate",
-      question: "Does HuntDeal use affiliate links?",
-      answer:
-        "Yes. Some links on HuntDeal may be affiliate links. If you make a qualifying purchase after clicking one of these links, HuntDeal may earn a commission at no additional cost to you.",
-    },
-    {
-      category: "Affiliate",
-      question: "Does using an affiliate link cost me extra?",
-      answer:
-        "No. Using an affiliate link does not add an extra cost to your purchase. The retailer's normal pricing and terms apply.",
-    },
-    {
-      category: "Support",
-      question: "I found an incorrect deal. How can I report it?",
-      answer:
-        "You can contact us through the Contact page and tell us which product or deal needs attention.",
-    },
-    {
-      category: "Support",
-      question: "How can I contact HuntDeal?",
-      answer:
-        "You can reach us through our Contact page with your question, feedback or suggestion.",
-    },
-  ];
+export default function FAQ() {
+  const [search, setSearch] = useState("");
+  const [activeGroup, setActiveGroup] = useState(faqGroups[0].id);
 
-  const filteredFaqs = faqs.filter((faq) => {
-    const search = searchTerm.toLowerCase();
+  const needle = search.trim().toLowerCase();
 
-    return (
-      faq.question.toLowerCase().includes(search) ||
-      faq.answer.toLowerCase().includes(search) ||
-      faq.category.toLowerCase().includes(search)
-    );
-  });
+  /** When searching, every group is filtered; otherwise one group is shown. */
+  const visibleGroups = useMemo(() => {
+    if (!needle) {
+      return faqGroups.filter((group) => group.id === activeGroup);
+    }
+    return faqGroups
+      .map((group) => ({
+        ...group,
+        items: group.items.filter(
+          (item) =>
+            item.q.toLowerCase().includes(needle) ||
+            item.a.toLowerCase().includes(needle),
+        ),
+      }))
+      .filter((group) => group.items.length > 0);
+  }, [needle, activeGroup]);
 
-  const toggleFaq = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const totalMatches = visibleGroups.reduce(
+    (sum, group) => sum + group.items.length,
+    0,
+  );
 
   return (
-    <main className="faq-page">
-      <div className="container">
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Home", to: "/" }, { label: "FAQ" }]}
+        eyebrow={
+          <>
+            <HelpCircle size={14} aria-hidden="true" />
+            Frequently asked questions
+          </>
+        }
+        title="Questions people ask before they trust a deal site"
+        description="How HuntDeal works, what affiliate links mean for you, and how far our price and availability data can be trusted."
+      />
 
-        {/* BREADCRUMB */}
+      <section className="section">
+        <div className="shell faq-layout">
+          <nav className="faq-nav" aria-label="FAQ topics">
+            {faqGroups.map((group) => (
+              <button
+                key={group.id}
+                type="button"
+                className="faq-nav__item"
+                data-active={!needle && group.id === activeGroup}
+                onClick={() => {
+                  setSearch("");
+                  setActiveGroup(group.id);
+                }}
+              >
+                <span>{group.title}</span>
+                <span className="badge badge--neutral">{group.items.length}</span>
+              </button>
+            ))}
+          </nav>
 
-        <div className="breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <span>FAQ</span>
-        </div>
-
-        {/* HERO */}
-
-        <section className="faq-hero">
-
-          <div>
-            <span className="section-label">
-              FREQUENTLY ASKED QUESTIONS
-            </span>
-
-            <h1>
-              Questions?
-              <br />
-              <span>We've got answers.</span>
-            </h1>
-
-            <p>
-              Find answers to common questions about HuntDeal,
-              deals, products and affiliate links.
-            </p>
-          </div>
-
-          <div className="faq-hero-card">
-
-            <div className="faq-hero-icon">
-              <MessageCircle size={26} />
-            </div>
-
-            <strong>
-              Need more help?
-            </strong>
-
-            <span>
-              Can't find what you're looking for?
-            </span>
-
-            <Link to="/contact">
-              Contact Us
-              <ArrowRight size={14} />
-            </Link>
-
-          </div>
-
-        </section>
-
-        {/* SEARCH */}
-
-        <section className="faq-search-section">
-
-          <div className="faq-search">
-
-            <Search size={19} />
-
-            <input
-              type="text"
-              placeholder="Search frequently asked questions..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setOpenIndex(null);
-              }}
+          <div className="stack stack-6">
+            <SearchBar
+              value={search}
+              onChange={setSearch}
+              onSubmit={setSearch}
+              placeholder="Search questions"
             />
 
-          </div>
-
-        </section>
-
-        {/* FAQ LIST */}
-
-        <section className="faq-content">
-
-          <div className="faq-heading">
-
-            <div>
-              <span className="section-label">
-                HELP CENTER
-              </span>
-
-              <h2>
-                Frequently asked questions
-              </h2>
-            </div>
-
-            <span className="faq-count">
-              {filteredFaqs.length} Questions
-            </span>
-
-          </div>
-
-          <div className="faq-list">
-
-            {filteredFaqs.length > 0 ? (
-              filteredFaqs.map((faq, index) => (
-
-                <div
-                  className={`faq-item ${
-                    openIndex === index ? "active" : ""
-                  }`}
-                  key={`${faq.question}-${index}`}
-                >
-
-                  <button
-                    className="faq-question"
-                    onClick={() => toggleFaq(index)}
-                    aria-expanded={openIndex === index}
-                  >
-
-                    <div>
-
-                      <span className="faq-category">
-                        {faq.category}
-                      </span>
-
-                      <h3>
-                        {faq.question}
-                      </h3>
-
-                    </div>
-
-                    <span className="faq-chevron">
-                      <ChevronDown size={19} />
-                    </span>
-
-                  </button>
-
-                  {openIndex === index && (
-                    <div className="faq-answer">
-                      <p>{faq.answer}</p>
-                    </div>
-                  )}
-
-                </div>
-
-              ))
-            ) : (
-
-              <div className="faq-empty">
-
-                <Search size={28} />
-
-                <h3>
-                  No questions found
-                </h3>
-
-                <p>
-                  Try searching with a different keyword.
-                </p>
-
-              </div>
-
+            {needle && (
+              <p className="text-sm text-muted">
+                {totalMatches} {totalMatches === 1 ? "question" : "questions"}{" "}
+                match “{search}”.
+              </p>
             )}
 
+            {visibleGroups.length === 0 && (
+              <EmptyState
+                icon={HelpCircle}
+                title="No question matches that search"
+                message="Try a shorter term, or get in touch and we will answer directly."
+                action={{ label: "Contact us", to: "/contact" }}
+                secondaryAction={{ label: "Clear search", onClick: () => setSearch("") }}
+              />
+            )}
+
+            {visibleGroups.map((group) => (
+              <section className="stack stack-4" key={group.id}>
+                <h2 className="panel-title">{group.title}</h2>
+                <Accordion
+                  items={group.items.map((item) => ({
+                    id: item.q,
+                    question: item.q,
+                    answer: item.a,
+                  }))}
+                  defaultOpen={needle ? null : 0}
+                />
+              </section>
+            ))}
+
+            <div className="card card--pad row row--between row--wrap">
+              <div className="stack stack-2">
+                <h2 className="panel-title">Still have a question?</h2>
+                <p className="text-sm text-muted">
+                  If it is not answered here, send it over — the answer usually
+                  ends up on this page.
+                </p>
+              </div>
+              <Link to="/contact" className="btn btn--primary">
+                <MessageSquare size={16} aria-hidden="true" />
+                Contact us
+              </Link>
+            </div>
           </div>
-
-        </section>
-
-        {/* CONTACT CTA */}
-
-        <section className="faq-contact-cta">
-
-          <div>
-
-            <span className="section-label">
-              STILL HAVE QUESTIONS?
-            </span>
-
-            <h2>
-              We're here to <span>help.</span>
-            </h2>
-
-            <p>
-              If you couldn't find your answer, send us a
-              message and we'll help you out.
-            </p>
-
-          </div>
-
-          <Link
-            to="/contact"
-            className="faq-contact-button"
-          >
-            Contact Us
-            <ArrowRight size={16} />
-          </Link>
-
-        </section>
-
-      </div>
-    </main>
+        </div>
+      </section>
+    </>
   );
 }
-
-export default FAQ;

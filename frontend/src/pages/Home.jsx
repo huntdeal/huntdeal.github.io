@@ -1,318 +1,207 @@
 import { Link } from "react-router-dom";
-
 import {
-  Search,
-  User,
-  Heart,
-  Menu,
-  X,
-  ChevronRight,
-  Zap,
-  TrendingUp,
-  ShieldCheck,
+  ArrowRight,
+  BadgePercent,
+  Clock3,
+  Flame,
+  LayoutGrid,
+  Sparkles,
+  Star,
 } from "lucide-react";
-import DealCard from "../components/DealCard";
-import "../App.css";
 
-const categories = [
-  {
-    name: "Electronics",
-    slug: "electronics",
-    icon: "💻",
-  },
-  {
-    name: "Mobiles",
-    slug: "mobiles",
-    icon: "📱",
-  },
-  {
-    name: "Laptops",
-    slug: "laptops",
-    icon: "💻",
-  },
-  {
-    name: "Fashion",
-    slug: "fashion",
-    icon: "👟",
-  },
-  {
-    name: "Home & Kitchen",
-    slug: "home-kitchen",
-    icon: "🏠",
-  },
-  {
-    name: "Gaming",
-    slug: "gaming",
-    icon: "🎮",
-  },
-  {
-    name: "Beauty",
-    slug: "beauty",
-    icon: "✨",
-  },
-  {
-    name: "Accessories",
-    slug: "accessories",
-    icon: "🎧",
-  },
-];
+import BenefitsSection from "../components/BenefitsSection.jsx";
+import BrandStrip from "../components/BrandStrip.jsx";
+import CategoryCard from "../components/CategoryCard.jsx";
+import HeroSection from "../components/HeroSection.jsx";
+import NewsletterSection from "../components/NewsletterSection.jsx";
+import ProductGrid from "../components/ProductGrid.jsx";
+import ProductImage from "../components/ProductImage.jsx";
+import SectionHeader from "../components/SectionHeader.jsx";
+import Price from "../components/ui/Price.jsx";
+import { ListSkeleton } from "../components/states/LoadingState.jsx";
+import { useAsync } from "../hooks/useAsync.js";
+import { listCategories } from "../services/categoryService.js";
+import {
+  getCatalogueStats,
+  getFeaturedProducts,
+  getRecentProducts,
+  getTodaysDeals,
+  getTopDiscounts,
+  getTrendingProducts,
+} from "../services/productService.js";
 
-const deals = [
-  {
-    title: "Wireless Noise Cancelling Headphones",
-    category: "Electronics",
-    price: "₹2,499",
-    oldPrice: "₹4,999",
-    discount: "50% OFF",
-    rating: "4.4",
-    emoji: "🎧",
-  },
-  {
-    title: "Smart Watch with AMOLED Display",
-    category: "Wearables",
-    price: "₹1,799",
-    oldPrice: "₹3,099",
-    discount: "42% OFF",
-    rating: "4.3",
-    emoji: "⌚",
-  },
-  {
-    title: "Mechanical Gaming Keyboard",
-    category: "Gaming",
-    price: "₹2,199",
-    oldPrice: "₹3,999",
-    discount: "45% OFF",
-    rating: "4.5",
-    emoji: "⌨️",
-  },
-  {
-    title: "Air Fryer Digital 4.5L",
-    category: "Home & Kitchen",
-    price: "₹3,499",
-    oldPrice: "₹5,999",
-    discount: "42% OFF",
-    rating: "4.2",
-    emoji: "🍳",
-  },
-];
+export default function Home() {
+  const stats = useAsync(() => getCatalogueStats(), []);
+  const featured = useAsync(() => getFeaturedProducts(8), []);
+  const todays = useAsync(() => getTodaysDeals(4), []);
+  const trending = useAsync(() => getTrendingProducts(4), []);
+  const topDiscounts = useAsync(() => getTopDiscounts(6), []);
+  const recent = useAsync(() => getRecentProducts(4), []);
+  const categories = useAsync(() => listCategories(), []);
 
-function Home() {
+  const headlineDeal = topDiscounts.data?.[0];
 
   return (
-    <div className="app">
+    <>
+      <HeroSection stats={stats.data} topDiscount={headlineDeal} />
 
-      {/* HERO */}
-      <main>
-        <section className="hero">
-          <div className="hero-glow glow-one"></div>
-          <div className="hero-glow glow-two"></div>
+      {/* Featured deals -------------------------------------------------- */}
+      <section className="section">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Featured"
+            eyebrowIcon={Star}
+            title="Deals we would send to a friend"
+            subtitle="Hand-picked from the catalogue for discount depth and rating together, not one or the other."
+            action={{ label: "See all deals", to: "/deals" }}
+          />
+          <ProductGrid
+            products={featured.data ?? []}
+            loading={featured.loading}
+            error={featured.error}
+            onRetry={featured.reload}
+            skeletonCount={8}
+          />
+        </div>
+      </section>
 
-          <div className="container hero-content">
-            <div className="hero-copy">
-              <div className="eyebrow">
-                <Zap size={15} />
-                <span>Deals worth hunting</span>
-              </div>
+      {/* Today's best + trending ----------------------------------------- */}
+      <section className="section section--muted">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Today's best"
+            eyebrowIcon={Clock3}
+            title="Biggest price drops today"
+            subtitle="Everything here is discounted 40% or more against its listed original price."
+            action={{ label: "Today's deals", to: "/deals?disc=40" }}
+          />
+          <ProductGrid
+            products={todays.data ?? []}
+            loading={todays.loading}
+            error={todays.error}
+            onRetry={todays.reload}
+            skeletonCount={4}
+          />
 
-              <h1>
-                Find the <span>Best Deals.</span>
-                <br />
-                Before They’re Gone.
-              </h1>
-
-              <p>
-                Discover hand-picked deals, trending products and huge
-                discounts — all in one place.
-              </p>
-
-              <div className="hero-buttons">
-                <a href="#deals" className="btn btn-primary">
-                  Explore Deals
-                  <ChevronRight size={18} />
-                </a>
-
-                <a href="#categories" className="btn btn-secondary">
-                  Browse Categories
-                </a>
-              </div>
-
-              <div className="hero-trust">
-                <div>
-                  <strong>1,000+</strong>
-                  <span>Deals Found</span>
-                </div>
-
-                <div>
-                  <strong>50K+</strong>
-                  <span>Deal Hunters</span>
-                </div>
-
-                <div>
-                  <strong>Daily</strong>
-                  <span>Updates</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="hero-visual">
-              <div className="hero-orbit orbit-one"></div>
-              <div className="hero-orbit orbit-two"></div>
-
-              <div className="deal-card-floating">
-                <div className="floating-badge">🔥 HOT DEAL</div>
-
-                <div className="floating-product">🎧</div>
-
-                <div className="floating-info">
-                  <span>Wireless Headphones</span>
-                  <strong>₹2,499</strong>
-                  <del>₹4,999</del>
-                </div>
-
-                <div className="floating-discount">50% OFF</div>
-              </div>
-
-              <div className="floating-small-card card-top">
-                <TrendingUp size={17} />
-                <span>Trending Now</span>
-              </div>
-
-              <div className="floating-small-card card-bottom">
-                <ShieldCheck size={17} />
-                <span>Verified Deals</span>
-              </div>
-            </div>
+          <div style={{ marginTop: "var(--sp-16)" }}>
+            <SectionHeader
+              eyebrow="Trending now"
+              eyebrowIcon={Flame}
+              title="What other hunters are opening"
+              subtitle="Ranked by demo engagement data while analytics are being connected."
+              action={{ label: "See trending", to: "/trending" }}
+            />
+            <ProductGrid
+              products={trending.data ?? []}
+              loading={trending.loading}
+              error={trending.error}
+              onRetry={trending.reload}
+              skeletonCount={4}
+              showRank
+              showEngagement
+            />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* FEATURES */}
-        <section className="features">
-          <div className="container feature-grid">
-            <div className="feature-item">
-              <Zap size={22} />
-              <div>
-                <strong>Updated Daily</strong>
-                <span>Fresh deals every day</span>
-              </div>
-            </div>
+      {/* Categories ------------------------------------------------------- */}
+      <section className="section">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Shop by category"
+            eyebrowIcon={LayoutGrid}
+            title="Start where you already know you need something"
+            subtitle="Eight categories, each with its own filters, sorting and deal count."
+            action={{ label: "All categories", to: "/categories" }}
+          />
 
-            <div className="feature-item">
-              <ShieldCheck size={22} />
-              <div>
-                <strong>Verified Deals</strong>
-                <span>Hand-picked offers</span>
-              </div>
-            </div>
-
-            <div className="feature-item">
-              <TrendingUp size={22} />
-              <div>
-                <strong>Big Discounts</strong>
-                <span>Find better prices</span>
-              </div>
-            </div>
+          <div className="grid-auto">
+            {(categories.data ?? []).slice(0, 8).map((category) => (
+              <CategoryCard key={category.slug} category={category} compact />
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CATEGORIES */}
-        <section className="section" id="categories">
-          <div className="container">
-            <div className="section-heading">
-              <div>
-                <span className="section-label">EXPLORE</span>
-                <h2>Shop by Category</h2>
-              </div>
-
-              <Link to="/categories" className="view-all">
-                View All <ChevronRight size={17} />
-                </Link>
+      {/* Top discounts ---------------------------------------------------- */}
+      <section className="section section--muted">
+        <div className="shell split">
+          <aside className="split__aside">
+            <span className="eyebrow" style={{ color: "var(--highlight)" }}>
+              <BadgePercent size={14} aria-hidden="true" />
+              Top discounts
+            </span>
+            <h2>The deepest cuts in the catalogue right now</h2>
+            <p style={{ fontSize: "var(--fs-sm)" }}>
+              Sorted purely by percentage off the original price. Big
+              percentages are worth a second look — check the original price on
+              Amazon before deciding.
+            </p>
+            <div className="hero__stat-value" style={{ marginTop: "var(--sp-4)" }}>
+              Up to {stats.data?.maxDiscount ?? 0}% off
             </div>
+            <Link
+              to="/deals?sort=discount"
+              className="btn btn--primary"
+              style={{ alignSelf: "flex-start", marginTop: "var(--sp-4)" }}
+            >
+              Browse by discount
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </aside>
 
-            <div className="category-grid">
-              {categories.map((category) => (
-                <Link
-                    to={`/categories/${category.slug}`}
-                    className="category-card"
-                    key={category.name}
-                >
-                  <div className="category-icon">{category.icon}</div>
-                  <span>{category.name}</span>
-                  <ChevronRight size={16} />
-                </Link>
-              ))}
-            </div>
+          <div className="rank-list">
+            {topDiscounts.loading && <ListSkeleton rows={6} />}
+            {topDiscounts.data?.map((product, index) => (
+              <Link
+                to={`/product/${product.id}`}
+                className="rank-row"
+                key={product.id}
+              >
+                <span className="rank-row__index">{index + 1}</span>
+                <ProductImage product={product} className="rank-row__img" />
+                <span className="rank-row__body">
+                  <span className="rank-row__name">{product.name}</span>
+                  <span className="rank-row__meta">
+                    {product.categoryName} · {product.brand}
+                  </span>
+                </span>
+                <span className="rank-row__price">
+                  <Price
+                    price={product.price}
+                    originalPrice={product.originalPrice}
+                    discount={product.discount}
+                  />
+                </span>
+              </Link>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* DEALS */}
-        <section className="section deals-section" id="deals">
-          <div className="container">
-            <div className="section-heading">
-              <div>
-                <span className="section-label">TODAY'S PICKS</span>
-                <h2>Today's Best Deals</h2>
-              </div>
+      {/* Recently added --------------------------------------------------- */}
+      <section className="section">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Just added"
+            eyebrowIcon={Sparkles}
+            title="Recently added deals"
+            subtitle="The newest entries in the catalogue, newest first."
+            action={{ label: "Sort by newest", to: "/deals?sort=newest" }}
+          />
+          <ProductGrid
+            products={recent.data ?? []}
+            loading={recent.loading}
+            error={recent.error}
+            onRetry={recent.reload}
+            skeletonCount={4}
+          />
+        </div>
+      </section>
 
-                <Link to="/deals" className="view-all">
-                    See All Deals <ChevronRight size={17} />
-                </Link>
-            </div>
-
-            <div className="deal-grid">
-              
-            {deals.map((deal, index) => {
-              const productImages = [
-                "/assets/product-placeholders/headphones.png",
-                "/assets/product-placeholders/smartwatch.png",
-                "/assets/product-placeholders/keyboard.png",
-                "/assets/product-placeholders/airfryer.png",
-              ];
-
-              return (
-                <DealCard
-                  key={deal.title}
-                  product={{
-                    id: index + 1,
-                    title: deal.title,
-                    category: deal.category,
-                    price: deal.price,
-                    originalPrice: deal.oldPrice,
-                    discount: deal.discount,
-                    rating: deal.rating,
-                    image: productImages[index],
-                    amazonLink: "#",
-                  }}
-                />
-              );
-            })}
-
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="cta-section" id="trending">
-          <div className="container">
-            <div className="cta-box">
-              <div>
-                <span className="section-label">DON'T MISS OUT</span>
-                <h2>More deals are waiting for you.</h2>
-                <p>
-                  Keep hunting. Keep saving. Find your next great deal with
-                  HuntDeal.
-                </p>
-              </div>
-
-              <a href="#deals" className="btn btn-primary">
-                Explore All Deals
-                <ChevronRight size={18} />
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+      <BenefitsSection />
+      <BrandStrip />
+      <NewsletterSection />
+    </>
   );
 }
-
-export default Home;

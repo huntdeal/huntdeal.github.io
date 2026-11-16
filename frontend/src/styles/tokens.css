@@ -1,0 +1,148 @@
+/* ==========================================================================
+   HuntDeal Design Tokens
+   Visual identity: "Editorial Commerce" — calm paper background, crisp ink
+   typography, indigo primary, teal + amber as supporting accents.
+   ========================================================================== */
+
+:root {
+  /* ---------- Brand / accent scales ---------- */
+  --c-brand-50: #f1f1fe;
+  --c-brand-100: #e4e4fc;
+  --c-brand-200: #c9c9f8;
+  --c-brand-300: #a7a8f2;
+  --c-brand-400: #8384ec;
+  --c-brand-500: #5b5ce2;
+  --c-brand-600: #4a4bcb;
+  --c-brand-700: #3c3da7;
+  --c-brand-800: #313282;
+
+  --c-teal-50: #e6f6f4;
+  --c-teal-100: #c8ebe7;
+  --c-teal-500: #17a398;
+  --c-teal-600: #128a81;
+
+  --c-amber-50: #fff6e6;
+  --c-amber-100: #ffe9c4;
+  --c-amber-500: #ffb547;
+  --c-amber-600: #e09322;
+
+  --c-success-50: #e7f6ef;
+  --c-success-500: #16a36a;
+  --c-success-600: #108052;
+
+  --c-error-50: #fdecec;
+  --c-error-500: #e5484d;
+  --c-error-600: #c5363b;
+
+  /* ---------- Neutrals ---------- */
+  --c-ink-900: #0e1526;
+  --c-ink-800: #172033;
+  --c-ink-700: #27324a;
+  --c-ink-600: #3d4759;
+  --c-ink-500: #667085;
+  --c-ink-400: #8a94a6;
+  --c-ink-300: #aeb6c4;
+
+  /* ---------- Semantic surfaces ---------- */
+  --bg: #f7f8fc;
+  --bg-sunken: #eef0f8;
+  --surface: #ffffff;
+  --surface-muted: #fafbff;
+  --surface-inverse: #10172a;
+  --surface-brand-soft: var(--c-brand-50);
+
+  --text: var(--c-ink-800);
+  --text-strong: var(--c-ink-900);
+  --text-muted: var(--c-ink-500);
+  --text-subtle: var(--c-ink-400);
+  --text-on-brand: #ffffff;
+
+  --border: #e6e9f0;
+  --border-strong: #d7dce8;
+  --border-brand: var(--c-brand-200);
+
+  --accent: var(--c-brand-500);
+  --accent-hover: var(--c-brand-600);
+  --accent-soft: var(--c-brand-50);
+  --accent-2: var(--c-teal-500);
+  --highlight: var(--c-amber-500);
+  --success: var(--c-success-500);
+  --error: var(--c-error-500);
+
+  /* ---------- Typography ---------- */
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system,
+    sans-serif;
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", monospace;
+
+  --fs-display: clamp(2.3rem, 1.3rem + 3.6vw, 4rem);
+  --fs-h1: clamp(1.9rem, 1.3rem + 2.2vw, 2.9rem);
+  --fs-h2: clamp(1.45rem, 1.15rem + 1.2vw, 2.05rem);
+  --fs-h3: clamp(1.15rem, 1.02rem + 0.5vw, 1.4rem);
+  --fs-h4: 1.0625rem;
+  --fs-body: 0.9875rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.78125rem;
+  --fs-2xs: 0.7rem;
+
+  --lh-tight: 1.12;
+  --lh-snug: 1.3;
+  --lh-base: 1.6;
+  --lh-loose: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.02em;
+  --tracking-caps: 0.09em;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-20: 5rem;
+  --sp-24: 6rem;
+
+  --section-y: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --shell-max: 1240px;
+  --shell-pad: clamp(1rem, 0.4rem + 2vw, 2.5rem);
+
+  /* ---------- Radii ---------- */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-xs: 0 1px 2px rgba(16, 23, 42, 0.05);
+  --shadow-sm: 0 2px 8px rgba(16, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px -12px rgba(16, 23, 42, 0.16);
+  --shadow-lg: 0 20px 48px -24px rgba(16, 23, 42, 0.26);
+  --shadow-brand: 0 14px 30px -16px rgba(91, 92, 226, 0.6);
+  --ring: 0 0 0 3px rgba(91, 92, 226, 0.24);
+
+  /* ---------- Motion ---------- */
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --t-fast: 140ms var(--ease);
+  --t-base: 220ms var(--ease);
+  --t-slow: 380ms var(--ease);
+
+  /* ---------- Inline assets ---------- */
+  --chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  --grid-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M40 0H0v40' fill='none' stroke='%23e6e9f0' stroke-width='1'/%3E%3C/svg%3E");
+
+  /* ---------- Layout constants ---------- */
+  --navbar-h: 70px;
+  --admin-sidebar-w: 256px;
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+}

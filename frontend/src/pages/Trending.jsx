@@ -1,231 +1,175 @@
 import { Link } from "react-router-dom";
-import {
-  TrendingUp,
-  ChevronRight,
-  Flame,
-} from "lucide-react";
-import DealCard from "../components/DealCard";
+import { Flame, Info, TrendingUp } from "lucide-react";
 
-const trendingProducts = [
-  {
-    id: 3,
-    rank: "01",
-    title: "Smart Watch with AMOLED Display",
-    category: "Wearables",
-    price: "₹1,799",
-    oldPrice: "₹3,099",
-    discount: "42% OFF",
-    rating: "4.3",
-    emoji: "⌚",
-    clicks: "2.4K clicks",
-  },
-  {
-    id: 1,
-    rank: "02",
-    title: "Wireless Noise Cancelling Headphones",
-    category: "Electronics",
-    price: "₹2,499",
-    oldPrice: "₹4,999",
-    discount: "50% OFF",
-    rating: "4.4",
-    emoji: "🎧",
-    clicks: "2.1K clicks",
-  },
-  {
-    id: 4,
-    rank: "03",
-    title: "Mechanical Gaming Keyboard",
-    category: "Gaming",
-    price: "₹2,199",
-    oldPrice: "₹3,999",
-    discount: "45% OFF",
-    rating: "4.5",
-    emoji: "⌨️",
-    clicks: "1.8K clicks",
-  },
-  {
-    id: 6,
-    rank: "04",
-    title: "Air Fryer Digital 4.5L",
-    category: "Home & Kitchen",
-    price: "₹3,499",
-    oldPrice: "₹5,999",
-    discount: "42% OFF",
-    rating: "4.2",
-    emoji: "🍳",
-    clicks: "1.6K clicks",
-  },
-  {
-    id: 2,
-    rank: "05",
-    title: "Portable Bluetooth Speaker",
-    category: "Electronics",
-    price: "₹1,299",
-    oldPrice: "₹2,499",
-    discount: "48% OFF",
-    rating: "4.3",
-    emoji: "🔊",
-    clicks: "1.4K clicks",
-  },
-  {
-    id: 5,
-    rank: "06",
-    title: "4K Action Camera",
-    category: "Electronics",
-    price: "₹3,999",
-    oldPrice: "₹6,999",
-    discount: "43% OFF",
-    rating: "4.5",
-    emoji: "📷",
-    clicks: "1.2K clicks",
-  },
-  {
-    id: 7,
-    rank: "07",
-    title: "27-inch Full HD Monitor",
-    category: "Electronics",
-    price: "₹8,499",
-    oldPrice: "₹12,999",
-    discount: "35% OFF",
-    rating: "4.4",
-    emoji: "🖥️",
-    clicks: "980 clicks",
-  },
-  {
-    id: 8,
-    rank: "08",
-    title: "Wireless Gaming Headset",
-    category: "Gaming",
-    price: "₹2,799",
-    oldPrice: "₹4,499",
-    discount: "38% OFF",
-    rating: "4.2",
-    emoji: "🎮",
-    clicks: "870 clicks",
-  },
-];
+import NewsletterSection from "../components/NewsletterSection.jsx";
+import ProductGrid from "../components/ProductGrid.jsx";
+import SectionHeader from "../components/SectionHeader.jsx";
+import Breadcrumb from "../components/Breadcrumb.jsx";
+import { useAsync } from "../hooks/useAsync.js";
+import { listCategories } from "../services/categoryService.js";
+import { getTrendingProducts } from "../services/productService.js";
+import { getCategoryPerformance } from "../services/analyticsService.js";
+import { formatCompact } from "../utils/format.js";
 
-function Trending() {
+export default function Trending() {
+  const trending = useAsync(() => getTrendingProducts(12), []);
+  const categoryStats = useAsync(() => getCategoryPerformance(), []);
+  const categories = useAsync(() => listCategories(), []);
+
+  const items = trending.data ?? [];
+  const podium = items.slice(0, 3);
+  const rest = items.slice(3);
+  const totalViews = items.reduce((sum, item) => sum + item.clicks, 0);
+
   return (
-    <main className="trending-page">
-      <div className="container">
+    <>
+      <section className="section section--tight">
+        <div className="shell stack stack-6">
+          <Breadcrumb items={[{ label: "Home", to: "/" }, { label: "Trending" }]} />
 
-        {/* BREADCRUMB */}
+          <div className="trend-hero">
+            <div className="trend-hero__inner">
+              <div className="stack stack-4">
+                <span className="eyebrow" style={{ color: "var(--highlight)" }}>
+                  <Flame size={14} aria-hidden="true" />
+                  Trending now
+                </span>
+                <h1 className="trend-hero__title">
+                  The deals getting the most attention
+                </h1>
+                <p style={{ fontSize: "var(--fs-sm)", maxWidth: "52ch" }}>
+                  Ranked by how often a deal is opened. These figures are demo
+                  engagement data generated for the frontend build — they do not
+                  represent real visitor activity yet.
+                </p>
+                <p
+                  className="row"
+                  style={{ fontSize: "var(--fs-xs)", color: "rgba(255,255,255,0.6)" }}
+                >
+                  <Info size={14} aria-hidden="true" />
+                  Live analytics arrive with the backend integration.
+                </p>
+              </div>
 
-        <div className="breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <span>Trending</span>
-        </div>
-
-        {/* HERO */}
-
-        <section className="trending-header">
-
-          <div className="trending-header-content">
-
-            <div className="trending-label">
-              <TrendingUp size={14} />
-              TRENDING NOW
+              <div className="trend-metrics">
+                <div className="trend-metric">
+                  <div className="trend-metric__value">{items.length}</div>
+                  <div className="trend-metric__label">Deals ranked</div>
+                </div>
+                <div className="trend-metric">
+                  <div className="trend-metric__value">
+                    {formatCompact(totalViews)}
+                  </div>
+                  <div className="trend-metric__label">Demo views</div>
+                </div>
+                <div className="trend-metric">
+                  <div className="trend-metric__value">
+                    {categoryStats.data?.[0]?.name ?? "—"}
+                  </div>
+                  <div className="trend-metric__label">Hottest category</div>
+                </div>
+              </div>
             </div>
-
-            <h1>
-              What's <span>Trending</span>
-            </h1>
-
-            <p>
-              Discover the products and deals getting the most
-              attention from deal hunters right now.
-            </p>
-
           </div>
+        </div>
+      </section>
 
-          <div className="trending-stat">
+      {/* Podium ---------------------------------------------------------- */}
+      <section className="section section--tight">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Top three"
+            eyebrowIcon={TrendingUp}
+            title="Most opened this week"
+            subtitle="The three deals with the highest demo engagement."
+          />
 
-            <strong>24H</strong>
-            <span>Trending Data</span>
+          <div className="podium">
+            {trending.loading &&
+              Array.from({ length: 3 }, (_, index) => (
+                <div className="skeleton" key={index} style={{ height: 380 }} />
+              ))}
 
+            {podium.map((product, index) => (
+              <div className={`podium__item podium__item--${index + 1}`} key={product.id}>
+                <ProductGrid
+                  products={[{ ...product, rank: index + 1 }]}
+                  showRank
+                  showEngagement
+                />
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-        </section>
+      {/* Trending categories --------------------------------------------- */}
+      <section className="section section--muted">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Trending categories"
+            title="Where the interest is concentrated"
+            subtitle="Categories ordered by total demo engagement across their deals."
+            action={{ label: "All categories", to: "/categories" }}
+          />
 
-        {/* TRENDING NOTICE */}
-
-        <div className="trending-notice">
-
-          <Flame size={19} />
-
-          <div>
-            <strong>Popular right now</strong>
-
-            <span>
-              These deals are currently receiving high engagement
-              on HuntDeal.
-            </span>
+          <div className="grid-auto">
+            {(categoryStats.data ?? []).slice(0, 4).map((stat, index) => {
+              const category = (categories.data ?? []).find(
+                (item) => item.slug === stat.slug,
+              );
+              return (
+                <Link
+                  to={`/categories/${stat.slug}`}
+                  key={stat.slug}
+                  className="cat-card cat-card--compact"
+                  style={{
+                    "--cat-tint": category?.tint,
+                    "--cat-solid": category?.solid,
+                  }}
+                >
+                  <span className="cat-card__icon" aria-hidden="true">
+                    <span style={{ fontWeight: 800 }}>#{index + 1}</span>
+                  </span>
+                  <div className="cat-card__body">
+                    <span className="cat-card__name">{stat.name}</span>
+                    <span className="text-xs text-muted">
+                      {formatCompact(stat.clicks)} demo views · avg{" "}
+                      {stat.avgDiscount}% off
+                    </span>
+                    <span className="cat-card__count">
+                      <span>{stat.products} deals</span>
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-
         </div>
+      </section>
 
-        {/* PRODUCTS */}
-
-        
-{/* PRODUCTS */}
-
-<section className="trending-grid">
-  {trendingProducts.map((product) => {
-    const productImages = {
-      1: "/assets/product-placeholders/headphones.png",
-      2: "/assets/product-placeholders/speaker.png",
-      3: "/assets/product-placeholders/smartwatch.png",
-      4: "/assets/product-placeholders/keyboard.png",
-      5: "/assets/product-placeholders/camera.png",
-      6: "/assets/product-placeholders/airfryer.png",
-      7: "/assets/product-placeholders/monitor.png",
-      8: "/assets/product-placeholders/headphones.png",
-    };
-
-    return (
-      <div className="trending-card-wrapper" key={product.id}>
-
-        <DealCard
-          product={{
-            id: product.id,
-            rank: product.rank,
-            title: product.title,
-            category: product.category,
-            price: product.price,
-            originalPrice: product.oldPrice,
-            discount: product.discount,
-            rating: product.rating,
-            image: productImages[product.id],
-            amazonLink: "#",
-          }}
-        />
-
-        <div className="trending-clicks">
-          <TrendingUp size={13} />
-          {product.clicks}
+      {/* Remaining popular products -------------------------------------- */}
+      <section className="section">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Popular products"
+            title="Also getting a lot of attention"
+            subtitle="Ranked four and below, by the same demo engagement measure."
+            action={{ label: "Sort all deals by popularity", to: "/deals?sort=popular" }}
+          />
+          <ProductGrid
+            products={rest}
+            loading={trending.loading}
+            error={trending.error}
+            onRetry={trending.reload}
+            skeletonCount={8}
+            showRank
+            showEngagement
+          />
         </div>
-      </div>
-    );
-  })}
-</section>
+      </section>
 
-
-        {/* VIEW ALL */}
-
-        <div className="trending-footer">
-
-          <Link to="/deals">
-            Explore All Deals
-            <ChevronRight size={17} />
-          </Link>
-
-        </div>
-
-      </div>
-    </main>
+      <NewsletterSection />
+    </>
   );
 }
-
-export default Trending;

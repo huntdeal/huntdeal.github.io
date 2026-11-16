@@ -1,374 +1,225 @@
 import { Link } from "react-router-dom";
 import {
-  Target,
-  ShieldCheck,
+  BadgeCheck,
+  Compass,
+  Filter,
+  Info,
+  Link2,
   Search,
-  RefreshCw,
-  ExternalLink,
-  ArrowRight,
+  ShieldCheck,
+  Sparkles,
+  Target,
 } from "lucide-react";
 
-function About() {
+import NewsletterSection from "../components/NewsletterSection.jsx";
+import PageHeader from "../components/PageHeader.jsx";
+import SectionHeader from "../components/SectionHeader.jsx";
+import { useAsync } from "../hooks/useAsync.js";
+import { getCatalogueStats } from "../services/productService.js";
+import { SITE } from "../utils/constants.js";
+
+const STEPS = [
+  {
+    icon: Search,
+    title: "We collect the offers",
+    text: "Discounts across eight categories are gathered into one catalogue, with the current price recorded next to the original.",
+  },
+  {
+    icon: Filter,
+    title: "You narrow it down",
+    text: "Filter by price band, discount depth, rating and brand, then sort by what matters to you — not by what pays us most.",
+  },
+  {
+    icon: Link2,
+    title: "You buy on Amazon",
+    text: "Every deal links through to the Amazon listing. Payment, delivery and returns are handled entirely by Amazon.",
+  },
+];
+
+const VALUES = [
+  {
+    icon: Target,
+    title: "Discounts you can verify",
+    text: "We always show the original price next to the current one. A percentage with nothing to compare against is marketing, not information.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "No paid placement",
+    text: "No brand can buy a position in our listings. Ranking is discount depth, rating and category balance.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Honest about what we know",
+    text: "We never claim live stock or a guaranteed price. Both are confirmed on Amazon, which is where the purchase happens.",
+  },
+];
+
+export default function About() {
+  const stats = useAsync(() => getCatalogueStats(), []);
+
   return (
-    <main className="about-page">
-      <div className="container">
+    <>
+      <PageHeader
+        breadcrumb={[{ label: "Home", to: "/" }, { label: "About" }]}
+        eyebrow={
+          <>
+            <Compass size={14} aria-hidden="true" />
+            About HuntDeal
+          </>
+        }
+        title="A shorter path between a discount and a decision"
+        description="HuntDeal is a deal discovery platform for Amazon shoppers. We organise the offers, show the maths, and get out of the way."
+      />
 
-        {/* BREADCRUMB */}
+      {/* The problem ------------------------------------------------------ */}
+      <section className="section">
+        <div className="shell about-split">
+          <div className="stack stack-4">
+            <span className="eyebrow">
+              <Sparkles size={14} aria-hidden="true" />
+              The problem
+            </span>
+            <h2>Finding a real discount takes longer than it should</h2>
+            <p className="lede">
+              Sale season produces thousands of badges and very little
+              information. Prices move daily, original prices are often
+              optimistic, and the only way to tell a genuine price drop from a
+              rearranged number is to track it yourself.
+            </p>
+            <p className="lede">
+              That is tedious work, and it is the same work for everyone.
+              HuntDeal does it once: collects the offers, puts the current price
+              next to the original, and gives you tools to narrow thousands of
+              listings down to the handful worth opening.
+            </p>
+          </div>
 
-        <div className="breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <span>About</span>
+          <div className="stat-band">
+            <div>
+              <div className="hero__stat-value">{stats.data?.products ?? 0}</div>
+              <div className="hero__stat-label">Deals in the catalogue</div>
+            </div>
+            <div>
+              <div className="hero__stat-value">{stats.data?.categories ?? 8}</div>
+              <div className="hero__stat-label">Categories covered</div>
+            </div>
+            <div>
+              <div className="hero__stat-value">{stats.data?.avgDiscount ?? 0}%</div>
+              <div className="hero__stat-label">Average discount</div>
+            </div>
+            <div>
+              <div className="hero__stat-value">₹0</div>
+              <div className="hero__stat-label">Cost to use</div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* HERO */}
+      {/* How it works ------------------------------------------------------ */}
+      <section className="section section--muted" id="how-it-works">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="How it works"
+            title="Three steps, no checkout"
+            subtitle="HuntDeal is a discovery layer on top of Amazon. We never take payment and never hold an order."
+          />
 
-        <section className="about-hero">
+          <div className="step-list">
+            {STEPS.map((step, index) => (
+              <article className="step" key={step.title}>
+                <span className="step__num" aria-hidden="true">
+                  {index + 1}
+                </span>
+                <h3 className="benefit__title">
+                  <step.icon
+                    size={16}
+                    aria-hidden="true"
+                    style={{ verticalAlign: "-2px", marginRight: 8, color: "var(--accent)" }}
+                  />
+                  {step.title}
+                </h3>
+                <p className="benefit__text">{step.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <div className="about-hero-content">
+      {/* Why use it -------------------------------------------------------- */}
+      <section className="section">
+        <div className="shell">
+          <SectionHeader
+            eyebrow="Why use HuntDeal"
+            title="What we commit to"
+            subtitle="Three rules that decide how the catalogue is built and ranked."
+          />
+          <div className="value-grid">
+            {VALUES.map(({ icon: Icon, title, text }) => (
+              <article className="benefit" key={title}>
+                <span className="benefit__icon" aria-hidden="true">
+                  <Icon size={20} />
+                </span>
+                <h3 className="benefit__title">{title}</h3>
+                <p className="benefit__text">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <span className="section-label">
-              ABOUT HUNTDEAL
+      {/* Affiliate transparency -------------------------------------------- */}
+      <section className="section section--muted" id="affiliate">
+        <div className="shell about-split">
+          <div className="stack stack-4">
+            <span className="eyebrow">
+              <Info size={14} aria-hidden="true" />
+              Affiliate transparency
             </span>
-
-            <h1>
-              We Hunt Deals.
-              <br />
-              <span>You Save More.</span>
-            </h1>
-
-            <p>
-              HuntDeal is a deals discovery platform built to help
-              shoppers discover interesting products, discounts and
-              offers in one simple place.
+            <h2>How HuntDeal makes money</h2>
+            <p className="lede">
+              HuntDeal participates in the Amazon Associates programme.{" "}
+              <strong>{SITE.affiliateDisclosure}</strong> When you follow a link
+              from a deal page and buy something, Amazon may pay us a small
+              commission on that sale.
             </p>
+            <p className="lede">
+              It costs you nothing. The price on Amazon is the same whether you
+              arrive through HuntDeal or type the address yourself — the
+              commission comes out of Amazon&apos;s margin. Commission rates are
+              not an input to what we list or how we rank it, and no brand can
+              pay for a position.
+            </p>
+            <p className="lede">
+              We also do not sell products, take payment, or hold inventory.
+              There is no cart and no checkout on this site by design.
+            </p>
+          </div>
 
-            <div className="about-hero-buttons">
-
-              <Link
-                to="/deals"
-                className="about-primary-button"
-              >
-                Explore Deals
-                <ArrowRight size={17} />
+          <div className="card card--pad stack stack-4">
+            <h3 className="panel-title">Current build status</h3>
+            <p className="text-sm text-muted">
+              This is the frontend release. The catalogue, prices, ratings and
+              engagement figures are demo data used to build and test the
+              interface — they are not live Amazon values. Deal collection and
+              live pricing arrive with the backend integration.
+            </p>
+            <p className="text-sm text-muted">
+              Until then, treat every figure on this site as illustrative and
+              confirm it on the Amazon product page.
+            </p>
+            <div className="row row--wrap">
+              <Link to="/faq" className="btn btn--outline btn--sm">
+                Read the FAQ
               </Link>
-
-              <Link
-                to="/contact"
-                className="about-secondary-button"
-              >
-                Contact Us
+              <Link to="/contact" className="btn btn--primary btn--sm">
+                Get in touch
               </Link>
-
             </div>
-
           </div>
-
-          <div className="about-hero-visual">
-
-            <div className="about-glow"></div>
-
-            <div className="about-visual-card">
-
-              <div className="about-visual-icon">
-                🔥
-              </div>
-
-              <strong>
-                Deals Worth Hunting
-              </strong>
-
-              <span>
-                Hand-picked products and offers
-              </span>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* STATS */}
-
-        <section className="about-stats">
-
-          <div>
-            <strong>1,000+</strong>
-            <span>Deals Discovered</span>
-          </div>
-
-          <div>
-            <strong>50K+</strong>
-            <span>Deal Hunters</span>
-          </div>
-
-          <div>
-            <strong>Daily</strong>
-            <span>Updates</span>
-          </div>
-
-          <div>
-            <strong>24/7</strong>
-            <span>Deal Discovery</span>
-          </div>
-
-        </section>
-
-        {/* MISSION */}
-
-        <section className="about-section">
-
-          <div className="about-section-heading">
-
-            <span className="section-label">
-              OUR MISSION
-            </span>
-
-            <h2>
-              Making deal discovery
-              <span> simpler.</span>
-            </h2>
-
-            <p>
-              Finding a good deal shouldn't require checking
-              dozens of websites and comparing endless listings.
-              HuntDeal brings useful deal information together
-              so shoppers can discover products more easily.
-            </p>
-
-          </div>
-
-          <div className="about-mission-grid">
-
-            <div className="about-info-card">
-
-              <div className="about-card-icon">
-                <Target size={21} />
-              </div>
-
-              <h3>
-                Discover
-              </h3>
-
-              <p>
-                Find interesting products and deals across
-                different categories.
-              </p>
-
-            </div>
-
-            <div className="about-info-card">
-
-              <div className="about-card-icon">
-                <Search size={21} />
-              </div>
-
-              <h3>
-                Compare
-              </h3>
-
-              <p>
-                Review available deal information before
-                deciding where to shop.
-              </p>
-
-            </div>
-
-            <div className="about-info-card">
-
-              <div className="about-card-icon">
-                <ShieldCheck size={21} />
-              </div>
-
-              <h3>
-                Shop with Information
-              </h3>
-
-              <p>
-                We aim to make product and deal information
-                easier to understand.
-              </p>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* HOW IT WORKS */}
-
-        <section className="about-section about-how-section">
-
-          <div className="about-section-heading">
-
-            <span className="section-label">
-              HOW IT WORKS
-            </span>
-
-            <h2>
-              From discovery
-              <span> to checkout.</span>
-            </h2>
-
-          </div>
-
-          <div className="about-steps">
-
-            <div className="about-step">
-
-              <div className="about-step-number">
-                01
-              </div>
-
-              <div>
-                <h3>
-                  Discover a Deal
-                </h3>
-
-                <p>
-                  Browse categories, today's deals or trending
-                  products.
-                </p>
-              </div>
-
-            </div>
-
-            <div className="about-step">
-
-              <div className="about-step-number">
-                02
-              </div>
-
-              <div>
-                <h3>
-                  Review the Product
-                </h3>
-
-                <p>
-                  Check the available product information,
-                  pricing and deal details.
-                </p>
-              </div>
-
-            </div>
-
-            <div className="about-step">
-
-              <div className="about-step-number">
-                03
-              </div>
-
-              <div>
-                <h3>
-                  Visit the Retailer
-                </h3>
-
-                <p>
-                  When you choose to continue, you'll be
-                  redirected to the retailer's website.
-                </p>
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* TRUST */}
-
-        <section className="about-trust">
-
-          <div className="about-trust-icon">
-            <RefreshCw size={25} />
-          </div>
-
-          <div>
-
-            <span className="section-label">
-              DEAL INFORMATION
-            </span>
-
-            <h2>
-              Deals can change.
-            </h2>
-
-            <p>
-              Product prices, availability, discounts and other
-              information may change on the retailer's website.
-              Always verify the current information before making
-              a purchase.
-            </p>
-
-          </div>
-
-        </section>
-
-        {/* AFFILIATE DISCLOSURE */}
-
-        <section className="about-affiliate">
-
-          <div className="about-affiliate-icon">
-            <ExternalLink size={22} />
-          </div>
-
-          <div>
-
-            <h2>
-              Affiliate Disclosure
-            </h2>
-
-            <p>
-              Some links on HuntDeal may be affiliate links.
-              If you make a qualifying purchase after clicking
-              one of these links, we may earn a commission at
-              no additional cost to you.
-            </p>
-
-            <p className="about-affiliate-note">
-              As an Amazon Associate I earn from qualifying
-              purchases.
-            </p>
-
-          </div>
-
-        </section>
-
-        {/* CTA */}
-
-        <section className="about-cta">
-
-          <div>
-
-            <span className="section-label">
-              START HUNTING
-            </span>
-
-            <h2>
-              Your next great deal
-              <span> might be here.</span>
-            </h2>
-
-            <p>
-              Explore our latest deals and discover products
-              worth checking out.
-            </p>
-
-          </div>
-
-          <Link
-            to="/deals"
-            className="about-cta-button"
-          >
-            Explore All Deals
-            <ArrowRight size={17} />
-          </Link>
-
-        </section>
-
-      </div>
-    </main>
+        </div>
+      </section>
+
+      <NewsletterSection />
+    </>
   );
 }
-
-export default About;
